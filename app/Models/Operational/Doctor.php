@@ -2,6 +2,7 @@
 
 namespace App\Models\Operational;
 
+use App\Models\MasterData\Specialist;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,4 +33,17 @@ class Doctor extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function specialist()
+    {
+        // 3 parameter (model tujuan, foreign key, primary key dari model tujuan)
+        return $this->belongsTo(Specialist::class, 'specialist_id', 'id');
+    }
+    
+    public function appointment()
+    {
+        // 2 parameter (model tujuan, foreign key)
+        return $this->hasMany(Appointment::class, 'doctor_id');
+    }
 }
+ 

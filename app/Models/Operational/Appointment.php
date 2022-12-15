@@ -2,6 +2,8 @@
 
 namespace App\Models\Operational;
 
+use App\Models\MasterData\Consultation;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,4 +37,28 @@ class Appointment extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function doctor()
+    {
+        // 3 parameter(model tujuan, foreign key, primary key dari model tujuan)
+        return $this->belongsTo(Doctor::class, 'doctor_id', 'id');
+    }
+
+    public function consultation()
+    {
+        // 3 parameter(model tujuan, foreign key, primary ke di model tujuan)
+        return $this->belongsTo(Consultation::class, 'consultation_id', 'id');
+    }
+
+    public function user()
+    {
+        // 3 parameter(model tujuan, foreign key, primary ke di model tujuan)
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function transaction()
+    {
+        // 2 parameter(model tujuan, foreign key)
+        return $this->hasOne(Transaction::class, 'appointment_id');
+    }
 }

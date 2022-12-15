@@ -29,4 +29,9 @@ class Permission extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function permission_role()
+    {
+        return $this->hasMany(PermissionRole::class, 'permission_id');
+    }
 }

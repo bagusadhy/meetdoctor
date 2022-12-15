@@ -36,4 +36,10 @@ class Transaction extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function appointment()
+    {
+        // 3 parameter(model tujuan, foreign key, primary key di model tujuan)
+        return $this->belongsTo(Appointment::class, 'appointment_id', 'id');
+    }
 }
