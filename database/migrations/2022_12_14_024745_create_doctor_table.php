@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('fee');
             $table->longText('photo')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->softDeletes();
         });
     }

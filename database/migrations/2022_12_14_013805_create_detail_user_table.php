@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('contact')->nullable();
             $table->longText('address')->nullable();
             $table->longText('photo')->nullable();
-            $table->enum('gender', [1,2])->nullable();
-            $table->timestamps();
+            $table->enum('gender', [1, 2])->nullable();
+            // $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->softDeletes();
         });
     }

@@ -22,7 +22,9 @@ return new class extends Migration
             $table->string('sub_total')->nullable();
             $table->string('vat')->nullable();
             $table->string('total')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->softDeletes();
         });
     }

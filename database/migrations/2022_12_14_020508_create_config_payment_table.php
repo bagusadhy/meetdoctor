@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('fee');
             $table->string('vat');
-            $table->timestamps();
+            // $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });
     }
 
