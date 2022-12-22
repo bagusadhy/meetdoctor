@@ -19,17 +19,6 @@ class LandingController extends Controller
 {
 
     /**
-     * Create a new controller instance
-     * 
-     * @return void
-     */
-    public function __construct()
-    {
-        // this code, for security
-        $this->middleware('auth');
-    }
-    
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
