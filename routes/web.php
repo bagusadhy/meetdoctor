@@ -16,17 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::prefix('backsite.')->middleware(['auth:sanctum', 'verified'])->group(function () {
-// });
-
 Route::resource('/', LandingController::class);
 
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-
+// route for fronsite
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // appointment page
     Route::resource('appointment', AppointmentController::class);
 
@@ -34,9 +27,43 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('payment', PaymentController::class);
 });
 
-Route::group(['prefix' => 'backsite', 'as' => 'backsite.', 'middleware' => ['auth:sanctum', 'verified']], function () {
+
+// route for backsite
+Route::prefix('backsite')->middleware(['auth:sanctum', 'verified'])->group(function () {
     return view('welcome');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
+// Route::resource('/', LandingController::class);
+
+// Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+
+//     // appointment page
+//     Route::resource('appointment', AppointmentController::class);
+
+//     // payment page
+//     Route::resource('payment', PaymentController::class);
+// });
+
+// Route::group(['prefix' => 'backsite', 'as' => 'backsite.', 'middleware' => ['auth:sanctum', 'verified']], function () {
+//     return view('welcome');
+// });
 
 
 
