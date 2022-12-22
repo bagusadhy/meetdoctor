@@ -2,7 +2,14 @@
 
 namespace App\Http\Requests\Consultation;
 
+use App\Models\MasterData\Consultation;
+
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\Gate;
+
+use Symfony\Component\HttpFoundation\Response;
+
+
 
 class StoreConsultationRequest extends FormRequest
 {
@@ -13,7 +20,7 @@ class StoreConsultationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +31,7 @@ class StoreConsultationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:consultation'
         ];
     }
 }
