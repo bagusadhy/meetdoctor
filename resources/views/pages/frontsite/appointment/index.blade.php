@@ -197,7 +197,7 @@
                     </label>
 
                     <div class="grid">
-                        <a href="subject-consultation-payment.html" class="bg-[#0D63F3] rounded-full mt-5 text-white text-lg font-medium px-10 py-3 text-center">Continue</a>
+                        <a href="{{ route('payment.index') }}" class="bg-[#0D63F3] rounded-full mt-5 text-white text-lg font-medium px-10 py-3 text-center">Continue</a>
                     </div>
                 </form>
             </div>
