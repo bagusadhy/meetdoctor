@@ -13,10 +13,7 @@
     <body>
         
         @include('components.frontsite.header')
-
-            @yield('before-content')
             @yield('content')
-
         @include('components.frontsite.footer')
 
         
