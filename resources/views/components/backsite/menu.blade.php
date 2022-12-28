@@ -1,8 +1,7 @@
 <!-- Nav Sidebar -->
     <nav
         class="sidebar offcanvas-md offcanvas-start"
-        data-bs-scroll="true"
-        data-bs-backdrop="false">
+        >
         <div class="d-flex justify-content-end m-3 d-block d-md-none">
                 <button
                 aria-label="Close"
@@ -22,28 +21,61 @@
                 />
             </a>
         </div>
-        <div class="pt-2 d-flex flex-column gap-5">
+        <div class="pt-2 d-flex flex-column gap-4">
+            <div class="menu">
+                <a href="{{ route('dashboard.index') }}" class="item-menu active">Dashboard</a>
+            </div>
             <div class="menu p-0">
-                <p>Daily Use</p>
-                <a href="#" class="item-menu active">
-                    <i class="icon ic-stats"></i>
-                    Overview
-                </a>
+                <p>Master Data</p>
                 <a href="#" class="item-menu">
-                    <i class="icon ic-trans"></i>
-                    Transactions
+                    <i class="icon ic-stats"></i>
+                    Consultation
                 </a>
                 <a href="#" class="item-menu">
                     <i class="icon ic-msg"></i>
-                    Messages
+                    Specialist
+                </a>
+                <a href="#" class="item-menu">
+                    <i class="icon ic-trans"></i>
+                    Config Payment
+                </a>
+            </div>
+            <div class="menu p-0">
+                <p>Operational</p>
+                <a href="#" class="item-menu">
+                    <i class="icon ic-account"></i>
+                    Doctor
                 </a>
                 <a href="#" class="item-menu">
                     <i class="icon ic-stats"></i>
-                    Stats
+                    Appointment
                 </a>
                 <a href="#" class="item-menu">
+                    <i class="icon ic-trans"></i>
+                    Transaction
+                </a>
+                <a href="#" class="item-menu">
+                    <i class="icon ic-help"></i>
+                    Report
+                </a>
+            </div>
+            <div class="menu p-0">
+                <p>Management Access</p>
+                <a href="#" class="item-menu">
                     <i class="icon ic-account"></i>
-                    Account
+                    Permission
+                </a>
+                <a href="#" class="item-menu">
+                    <i class="icon ic-stats"></i>
+                    Role
+                </a>
+                <a href="#" class="item-menu">
+                    <i class="icon ic-trans"></i>
+                    User
+                </a>
+                <a href="#" class="item-menu">
+                    <i class="icon ic-settings"></i>
+                    User-type
                 </a>
             </div>
             <div class="menu">
@@ -51,10 +83,6 @@
                 <a href="#" class="item-menu">
                     <i class="icon ic-settings"></i>
                     Edit Profile
-                </a>
-                <a href="#" class="item-menu">
-                    <i class="icon ic-help"></i>
-                    Help
                 </a>
                 <a href="{{ route('logout') }}" class="item-menu"  onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
                     <i class="icon ic-logout"></i>
