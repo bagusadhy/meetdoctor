@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class SpecialistController extends Controller
 {
     /**
+     * Create a new controller instance
+     * 
+     * @return void
+     */
+    public function __construct()
+    {
+        // this code, for security
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('pages.backsite.master-data.specialist.index');
     }
 
     /**
@@ -24,7 +35,7 @@ class SpecialistController extends Controller
      */
     public function create()
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -35,7 +46,7 @@ class SpecialistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -46,7 +57,7 @@ class SpecialistController extends Controller
      */
     public function show($id)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -57,7 +68,7 @@ class SpecialistController extends Controller
      */
     public function edit($id)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -69,7 +80,7 @@ class SpecialistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return abort(404);
     }
 
     /**
@@ -80,6 +91,6 @@ class SpecialistController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return abort(404);
     }
 }

@@ -27,53 +27,53 @@
             </div>
             <div class="menu p-0">
                 <p>Master Data</p>
-                <a href="#" class="item-menu">
+                <a href="{{ route('consultation.index') }}" class="item-menu">
                     <i class="icon ic-stats"></i>
                     Consultation
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('specialist.index') }}" class="item-menu">
                     <i class="icon ic-msg"></i>
                     Specialist
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('config-payment.index') }}" class="item-menu">
                     <i class="icon ic-trans"></i>
                     Config Payment
                 </a>
             </div>
             <div class="menu p-0">
                 <p>Operational</p>
-                <a href="#" class="item-menu">
+                <a href="{{ route('doctor.index') }}" class="item-menu">
                     <i class="icon ic-account"></i>
                     Doctor
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('appointment.index') }}" class="item-menu">
                     <i class="icon ic-stats"></i>
                     Appointment
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('transaction.index') }}" class="item-menu">
                     <i class="icon ic-trans"></i>
                     Transaction
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('report.index') }}" class="item-menu">
                     <i class="icon ic-help"></i>
                     Report
                 </a>
             </div>
             <div class="menu p-0">
                 <p>Management Access</p>
-                <a href="#" class="item-menu">
+                <a href="{{ route('permission.index') }}" class="item-menu">
                     <i class="icon ic-account"></i>
                     Permission
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('role.index') }}" class="item-menu">
                     <i class="icon ic-stats"></i>
                     Role
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('user.index') }}" class="item-menu">
                     <i class="icon ic-trans"></i>
                     User
                 </a>
-                <a href="#" class="item-menu">
+                <a href="{{ route('user-type.index') }}" class="item-menu">
                     <i class="icon ic-settings"></i>
                     User-type
                 </a>

@@ -1,7 +1,24 @@
 <?php
 
+// master data
 use App\Http\Controllers\Backsite\DashboardController;
+use App\Http\Controllers\Backsite\ConsultationController as ConsultationBacksiteController;
+use App\Http\Controllers\Backsite\SpecialistController;
+use App\Http\Controllers\Backsite\ConfigPaymentController;
 
+// operational
+use App\Http\Controllers\Backsite\DoctorController;
+use App\Http\Controllers\Backsite\AppointmentController as AppointmentBacksiteController;
+use App\Http\Controllers\Backsite\TransactionController;
+use App\Http\Controllers\Backsite\ReportController;
+
+// management access
+use App\Http\Controllers\Backsite\PermissionController;
+use App\Http\Controllers\Backsite\RoleController;
+use App\Http\Controllers\Backsite\UserController;
+use App\Http\Controllers\Backsite\UserTypeController;
+
+// frontsite
 use App\Http\Controllers\Frontsite\AppointmentController;
 use App\Http\Controllers\Frontsite\LandingController;
 use App\Http\Controllers\Frontsite\PaymentController;
@@ -32,7 +49,26 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 // route for backsite
 Route::prefix('backsite')->middleware(['auth:sanctum', 'verified'])->group(function () {
+
+    // dashboard route
     Route::resource('dashboard', DashboardController::class);
+
+    // master-data route
+    Route::resource('consultation', ConsultationBacksiteController::class);
+    Route::resource('specialist', SpecialistController::class);
+    Route::resource('config-payment', ConfigPaymentController::class);
+
+    // operational route
+    Route::resource('appointment', AppointmentBacksiteController::class);
+    Route::resource('doctor', DoctorController::class);
+    Route::resource('transaction', TransactionController::class);
+    Route::resource('report', ReportController::class);
+
+    // management access route
+    Route::resource('permission', PermissionController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('user_type', UserTypeController::class);
 });
 
 
