@@ -8,6 +8,9 @@
         @stack('after-style')
         
     <body>
+
+       @include('sweetalert::alert')
+
         @include('components.backsite.menu')
         @yield('content')
         {{-- @include('components.backsite.header') --}}
