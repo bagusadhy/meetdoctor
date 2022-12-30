@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+// model
+use App\Models\MasterData\TypeUser;
+
 class UserTypeController extends Controller
 {
     /**
@@ -25,7 +28,12 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.management-access.type-user.index');
+
+        $user_type = TypeUser::all();
+
+
+        // dd($user_type->toArray());
+        return view('pages.backsite.management-access.type-user.index', compact('user_type'));
     }
 
     /**
