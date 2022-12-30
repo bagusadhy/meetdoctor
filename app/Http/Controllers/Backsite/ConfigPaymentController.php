@@ -5,6 +5,13 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+// models
+use App\Models\MasterData\ConfigPayment;
+
+// request
+use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
+use Spatie\LaravelIgnition\Http\Requests\UpdateConfigRequest;
+
 class ConfigPaymentController extends Controller
 {
     /**
@@ -25,7 +32,9 @@ class ConfigPaymentController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.master-data.config-payment.index');
+        $config = ConfigPayment::all();
+
+        return view('pages.backsite.master-data.config-payment.index', compact('config'));
     }
 
     /**
@@ -66,9 +75,9 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ConfigPayment $configPayment)
     {
-        return abort(404);
+        return view('pages.backsite.master-data.config-payment.edit', compact('configPayment'));
     }
 
     /**
@@ -78,9 +87,10 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateConfigPaymentRequest $request, $id)
     {
-        return abort(404);
+        $config = ConfigPayment::find($id)->update($request->all());
+        return redirect(route('config-payment.index'));
     }
 
     /**
