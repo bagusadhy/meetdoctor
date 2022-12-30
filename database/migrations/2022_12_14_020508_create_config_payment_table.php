@@ -20,6 +20,7 @@ return new class extends Migration
             // $table->timestamps();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
         });
     }
 
