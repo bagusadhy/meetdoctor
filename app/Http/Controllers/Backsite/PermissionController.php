@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\ManagementAccess\Permission;
+
 class PermissionController extends Controller
 {
     /**
@@ -25,7 +27,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.management-access.permission.index');
+        $permission = Permission::all();
+        return view('pages.backsite.management-access.permission.index', compact('permission'));
     }
 
     /**
