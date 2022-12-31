@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\MasterData\Consultation;
+
+use App\Http\Requests\Consultation\StoreConsultationRequest;
+use App\Http\Requests\Consultation\UpdateConsultationRequest;
+
 class ConsultationController extends Controller
 {
     /**
@@ -25,7 +30,10 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.master-data.consultation.index');
+        $consultation = Consultation::all();
+
+
+        return view('pages.backsite.master-data.consultation.index', compact('consultation'));
     }
 
     /**
@@ -44,9 +52,11 @@ class ConsultationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreConsultationRequest $request)
     {
-        return abort(404);
+        $consultation = Consultation::create($request->all());
+
+        return redirect(route('consultation.index'));
     }
 
     /**
@@ -55,9 +65,9 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Consultation $consultation)
     {
-        return abort(404);
+        return view('pages.backsite.master-data.consultation.show', compact('consultation'));
     }
 
     /**
@@ -66,9 +76,9 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Consultation $consultation)
     {
-        return abort(404);
+        return view('pages.backsite.master-data.consultation.edit', compact('consultation'));
     }
 
     /**
@@ -78,9 +88,11 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateConsultationRequest $request, $id)
     {
-        return abort(404);
+        $consultation = Consultation::find($id)->update($request->all());
+
+        return redirect(route('consultation.index'));
     }
 
     /**
@@ -89,8 +101,11 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Consultation $consultation)
     {
-        return abort(404);
+        // dd($id);
+        $consultation->delete();
+
+        return back();
     }
 }
