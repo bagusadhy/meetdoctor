@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Operational\Transaction;
+
 class TransactionController extends Controller
 {
     /**
@@ -25,7 +27,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.transaction.index');
+        $transactions = Transaction::all();
+        return view('pages.backsite.operational.transaction.index', compact('transactions'));
     }
 
     /**
@@ -55,9 +58,8 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        return abort(404);
     }
 
     /**
