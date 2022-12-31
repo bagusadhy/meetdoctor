@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Operational\Appointment;
+
 class AppointmentController extends Controller
 {
     /**
@@ -25,7 +27,8 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.appointment.index');
+        $appointment = Appointment::all();
+        return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }
 
     /**
@@ -55,9 +58,9 @@ class AppointmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Appointment $appointment)
     {
-        return abort(404);
+        return view('pages.backsite.operational.appointment.show', compact('appointment'));
     }
 
     /**
