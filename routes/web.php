@@ -40,7 +40,7 @@ Route::resource('/', LandingController::class);
 // route for fronsite
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // appointment page
-    Route::resource('appointment', AppointmentController::class);
+    Route::resource('create_appointment', AppointmentController::class);
 
     // payment page
     Route::resource('payment', PaymentController::class);
