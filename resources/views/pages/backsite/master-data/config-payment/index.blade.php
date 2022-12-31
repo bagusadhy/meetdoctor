@@ -25,13 +25,13 @@
                     <tbody>
                         @foreach ($config as $c)
                             <tr>
-                                <td>Rp.{{ number_format($c['fee']) }}</td>
-                                <td>{{ $c['vat'] }}</td>
+                                <td>Rp.{{ number_format($c->fee) }}</td>
+                                <td>{{ $c->vat }}</td>
                                 <td>
                                     <div class="text-center">
-                                        <a href="{{ route('config-payment.edit', $c['id']) }}" class="btn btn-sm btn-warning">Edit</a>
-                                        <button onclick="event.preventDefault(); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
-                                            <form action="{{ route('config-payment.destroy', $c->id) }}" id="form-delete" method="post" style="display: none">
+                                        <a href="{{ route('config-payment.edit', $c->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('config-payment.destroy', $c->id) }}'); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
+                                            <form action="" id="form-delete" method="post" style="display: none">
                                                 @csrf
                                                 @method('delete')
                                             </form>
