@@ -94,9 +94,9 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecialistRequest $request, $id)
+    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
     {
-        $specialist = Specialist::find($id)->update($request->all());
+        $specialist->update($request->all());
 
         return redirect(route('specialist.index'));
     }

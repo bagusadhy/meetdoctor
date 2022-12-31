@@ -28,14 +28,14 @@
                     <tbody>
                         @foreach ($specialist as $s)
                             <tr>
-                                <td>{{ $s['name'] }}</td>
+                                <td>{{ $s->name }}</td>
                                 <td>Rp.{{ number_format($s['price']) }}</td>
                                 <td>
                                     <div class="text-center">
-                                        <a href="{{ route('specialist.show', $s['id']) }}" class="btn btn-sm btn-success">Detail</a>
-                                        <a href="{{ route('specialist.edit', $s['id']) }}" class="btn btn-sm btn-warning">Edit</a>
-                                        <button onclick="event.preventDefault(); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
-                                            <form action="{{ route('specialist.destroy', $s->id) }}" id="form-delete" method="post" style="display: none">
+                                        <a href="{{ route('specialist.show', $s->id) }}" class="btn btn-sm btn-success">Detail</a>
+                                        <a href="{{ route('specialist.edit', $s->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('specialist.destroy', $s->id) }}'); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
+                                            <form action="" id="form-delete" method="post" style="display: none">
                                                 @csrf
                                                 @method('delete')
                                             </form>
