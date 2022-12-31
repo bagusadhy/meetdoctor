@@ -5,6 +5,13 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+// models
+use App\Models\ManagementAccess\Role;
+
+// request
+use App\Http\Requests\Role\StoreRoleRequest;
+use App\Http\Requests\Role\UpdateRoleRequest;
+
 class RoleController extends Controller
 {
     /**
@@ -25,7 +32,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.management-access.role.index');
+        $role = Role::all();
+
+        return view('pages.backsite.management-access.role.index', compact('role'));
     }
 
     /**
@@ -44,9 +53,13 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        return abort(404);
+
+        $role = Role::create($request->all());
+
+
+        return redirect(route('role.index'));
     }
 
     /**
@@ -55,9 +68,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        return abort(404);
+        return view('pages.backsite.management-access.role.show', compact('role'));
     }
 
     /**
@@ -66,9 +79,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        return abort(404);
+        return view('pages.backsite.management-access.role.edit', compact('role'));
     }
 
     /**
@@ -78,9 +91,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        return abort(404);
+        $role->update($request->all());
+
+        return redirect(route('role.index'));
     }
 
     /**
@@ -89,8 +104,10 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        return abort(404);
+        $role->delete();
+
+        return back();
     }
 }
