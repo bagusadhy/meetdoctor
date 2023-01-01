@@ -27,53 +27,53 @@
             </div>
             <div class="menu p-0">
                 <p>Master Data</p>
-                <a href="{{ route('consultation.index') }}" class="item-menu {{ request()->is('backsite/consultation') ? "active" : "" }}">
+                <a href="{{ route('consultation.index') }}" class="item-menu {{ request()->is('backsite/consultation') || request()->is('backsite/consultation/*') ? "active" : "" }}">
                     <i class="icon ic-stats"></i>
                     Consultation
                 </a>
-                <a href="{{ route('specialist.index') }}" class="item-menu {{ request()->is('backsite/specialist') ? "active" : "" }}">
+                <a href="{{ route('specialist.index') }}" class="item-menu {{ request()->is('backsite/specialist') || request()->is('backsite/specialist/*') ? "active" : "" }}">
                     <i class="icon ic-msg"></i>
                     Specialist
                 </a>
-                <a href="{{ route('config-payment.index') }}" class="item-menu {{ request()->is('backsite/config-payment') ? "active" : "" }}">
+                <a href="{{ route('config-payment.index') }}" class="item-menu {{ request()->is('backsite/config-payment') || request()->is('backsite/config-payment/*') ? "active" : "" }}">
                     <i class="icon ic-trans"></i>
                     Config Payment
                 </a>
             </div>
             <div class="menu p-0">
                 <p>Operational</p>
-                <a href="{{ route('doctor.index') }}" class="item-menu {{ request()->is('backsite/doctor') ? "active" : "" }}">
+                <a href="{{ route('doctor.index') }}" class="item-menu {{ request()->is('backsite/doctor') || request()->is('backsite/doctor/*') ? "active" : "" }}">
                     <i class="icon ic-account"></i>
                     Doctor
                 </a>
-                <a href="{{ route('appointment.index') }}" class="item-menu {{ request()->is('backsite/appointment') ? "active" : "" }}">
+                <a href="{{ route('appointment.index') }}" class="item-menu {{ request()->is('backsite/appointment') || request()->is('backsite/appointment/*') ? "active" : "" }}">
                     <i class="icon ic-stats"></i>
                     Appointment
                 </a>
-                <a href="{{ route('transaction.index') }}" class="item-menu {{ request()->is('backsite/transaction') ? "active" : "" }}">
+                <a href="{{ route('transaction.index') }}" class="item-menu {{ request()->is('backsite/transaction') || request()->is('backsite/transaction/*') ? "active" : "" }}">
                     <i class="icon ic-trans"></i>
                     Transaction
                 </a>
-                <a href="{{ route('report.index') }}" class="item-menu {{ request()->is('backsite/report') ? "active" : "" }}">
+                <a href="{{ route('report.index') }}" class="item-menu {{ request()->is('backsite/report') || request()->is('backsite/report/*') ? "active" : "" }}">
                     <i class="icon ic-help"></i>
                     Report
                 </a>
             </div>
             <div class="menu p-0">
                 <p>Management Access</p>
-                <a href="{{ route('permission.index') }}" class="item-menu {{ request()->is('backsite/permission') ? "active" : "" }}">
+                <a href="{{ route('permission.index') }}" class="item-menu {{ request()->is('backsite/permission') || request()->is('backsite/permission/*') ? "active" : "" }}">
                     <i class="icon ic-account"></i>
                     Permission
                 </a>
-                <a href="{{ route('role.index') }}" class="item-menu {{ request()->is('backsite/role') ? "active" : "" }}">
+                <a href="{{ route('role.index') }}" class="item-menu {{ request()->is('backsite/role') || request()->is('backsite/role/*') ? "active" : "" }}">
                     <i class="icon ic-stats"></i>
                     Role
                 </a>
-                <a href="{{ route('user.index') }}" class="item-menu {{ request()->is('backsite/user') ? "active" : "" }}">
+                <a href="{{ route('user.index') }}" class="item-menu {{ request()->is('backsite/user') || request()->is('backsite/user/*') ? "active" : "" }}">
                     <i class="icon ic-trans"></i>
                     User
                 </a>
-                <a href="{{ route('user_type.index') }}" class="item-menu {{ request()->is('backsite/user_type') ? "active" : "" }}">
+                <a href="{{ route('user_type.index') }}" class="item-menu {{ request()->is('backsite/user_type') || request()->is('backsite/user_type/*') ? "active" : "" }}">
                     <i class="icon ic-settings"></i>
                     User-type
                 </a>
