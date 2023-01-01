@@ -10,7 +10,6 @@ use App\Models\MasterData\ConfigPayment;
 
 // request
 use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
-use Spatie\LaravelIgnition\Http\Requests\UpdateConfigRequest;
 
 class ConfigPaymentController extends Controller
 {
@@ -90,6 +89,8 @@ class ConfigPaymentController extends Controller
     public function update(UpdateConfigPaymentRequest $request, $id)
     {
         $config = ConfigPayment::find($id)->update($request->all());
+
+        alert()->success('Success Message', 'Successfully updated config payment');
         return redirect(route('config-payment.index'));
     }
 
