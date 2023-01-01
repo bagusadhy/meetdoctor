@@ -30,7 +30,7 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        $consultation = Consultation::all();
+        $consultation = Consultation::orderBy('name', 'ASC')->get();
 
 
         return view('pages.backsite.master-data.consultation.index', compact('consultation'));
@@ -56,6 +56,8 @@ class ConsultationController extends Controller
     {
         $consultation = Consultation::create($request->all());
 
+
+        alert()->success('Success Message', 'Successfully added new Consultation');
         return redirect(route('consultation.index'));
     }
 
@@ -92,6 +94,8 @@ class ConsultationController extends Controller
     {
         $consultation = Consultation::find($id)->update($request->all());
 
+
+        alert()->success('Success Message', 'Successfully updated Consultation');
         return redirect(route('consultation.index'));
     }
 
@@ -104,8 +108,10 @@ class ConsultationController extends Controller
     public function destroy(Consultation $consultation)
     {
         // dd($id);
-        $consultation->delete();
+        $consultation->forceDelete();
 
+
+        alert()->success('Success Message', 'Successfully deleted Consultation');
         return back();
     }
 }
