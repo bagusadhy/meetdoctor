@@ -30,6 +30,16 @@ class Role extends Model
         'deleted_at',
     ];
 
+    public function user()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function permission()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
     public function role_user()
     {
         return $this->hasMany(RoleUser::class, 'role_id');

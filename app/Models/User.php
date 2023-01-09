@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\ManagementAccess\DetailUser;
+use App\Models\ManagementAccess\Role;
 use App\Models\ManagementAccess\RoleUser;
 use App\Models\Operational\Appointment;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -71,6 +72,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function role()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 
     public function appointment()
     {
