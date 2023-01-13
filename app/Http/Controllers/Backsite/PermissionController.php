@@ -3,8 +3,15 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
+// library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Request;
+
+// models
 use App\Models\ManagementAccess\Permission;
 
 class PermissionController extends Controller
@@ -27,6 +34,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $permission = Permission::all();
         return view('pages.backsite.management-access.permission.index', compact('permission'));
     }

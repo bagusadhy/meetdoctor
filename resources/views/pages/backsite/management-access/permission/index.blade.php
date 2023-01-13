@@ -14,34 +14,52 @@
             </header>
 
             <div class="table-responsive shadow p-3 mb-5 bg-body rounded">
-                <table class="table">
+                <table class="table" id="permission-table">
                     <thead>
                         <tr class="">
-                            <th>Tittle</th>
-                            <th class="text-center">Action</th>
+                            <th>Permission</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($permission as $p)
-                                <td>{{ $p->title }}</td>
-                                <td>
-                                    <div class="text-center">
-                                        <a href="{{ route('config-payment.edit', $p->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                        <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('config-payment.destroy', $p->id) }}'); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
-                                            <form action="" id="form-delete" method="post" style="display: none">
-                                                @csrf
-                                                @method('delete')
-                                            </form>
-                                        </button>
-                                    </div>
-                                </td>
+                        @foreach ($permission as $key => $permission_item)
+                            <tr data-entry-id="{{ $permission_item->id }}">
+                                <td>{{ $permission_item->title }}</td>
                             </tr>
                         @endforeach 
                     </tbody>
+                    <tfoot>
+                        <th >permission</th>
+                    </tfoot>
                 </table>
             </div>
         </section>
     </main>
 
 @endsection
+
+@push('after-script')
+    <script>
+        $(document).ready(function () {
+            
+            // Setup - add a text input to each footer cell
+            $('#permission-table tfoot th').each( function (i) {
+                var title = $('#permission-table thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" class="form-control" placeholder="Search '+ title +'" data-index="'+i+'" style="width:100%;"/>' );
+            } );
+
+            var table = $('#permission-table').DataTable( {
+                pagi
+            } );
+
+            // Filter event handler
+            $( table.table().container() ).on( 'keyup', 'tfoot input', function () {
+                table
+                    .column( $(this).data('index') )
+                    .search( this.value )
+                    .draw();
+            } );
+
+        });
+    </script>
+@endpush
 
