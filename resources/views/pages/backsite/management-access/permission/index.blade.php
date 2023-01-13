@@ -23,7 +23,7 @@
                     </thead>
                     <tbody>
                         @foreach ($permission as $p)
-                                <td>{{ $p->tittle }}</td>
+                                <td>{{ $p->title }}</td>
                                 <td>
                                     <div class="text-center">
                                         <a href="{{ route('config-payment.edit', $p->id) }}" class="btn btn-sm btn-warning">Edit</a>
@@ -36,7 +36,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @endforeach 
                     </tbody>
                 </table>
             </div>
