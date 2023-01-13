@@ -42,10 +42,13 @@
             </div>
             <div class="menu p-0">
                 <p>Operational</p>
+
+                @can('doctor_access_user')
                 <a href="{{ route('doctor.index') }}" class="item-menu {{ request()->is('backsite/doctor') || request()->is('backsite/doctor/*') ? "active" : "" }}">
                     <i class="icon ic-account"></i>
                     Doctor
                 </a>
+                @endcan
                 <a href="{{ route('appointment.index') }}" class="item-menu {{ request()->is('backsite/appointment') || request()->is('backsite/appointment/*') ? "active" : "" }}">
                     <i class="icon ic-stats"></i>
                     Appointment
