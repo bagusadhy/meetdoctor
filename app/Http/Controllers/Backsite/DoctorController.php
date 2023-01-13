@@ -3,7 +3,24 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
+
+// libraries
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+// request
+use App\Http\Requests\Doctor\StoreDoctorRequest;
+use App\Http\Requests\Doctor\UpdateDoctorRequest;
+
+// use Gate;
+// use Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+
+// models and models related to
+use App\Models\Operational\Doctor;
+
 
 class DoctorController extends Controller
 {
@@ -55,9 +72,10 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Doctor $doctor)
     {
-        return abort(404);
+        abort_if(Gate::denies('doctor_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return view('pages.backsite.operational.doctor.show', compact('doctor'));
     }
 
     /**

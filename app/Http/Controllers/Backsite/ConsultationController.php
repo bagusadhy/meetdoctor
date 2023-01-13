@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Models\MasterData\Consultation;
 
@@ -54,6 +56,7 @@ class ConsultationController extends Controller
      */
     public function store(StoreConsultationRequest $request)
     {
+        // abort_if(Gate::denies('consultation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $consultation = Consultation::create($request->all());
 
 
