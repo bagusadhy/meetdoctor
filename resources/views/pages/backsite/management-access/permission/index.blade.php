@@ -48,7 +48,6 @@
             } );
 
             var table = $('#permission-table').DataTable( {
-                pagi
             } );
 
             // Filter event handler
