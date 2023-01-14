@@ -19,16 +19,20 @@
                 <table class="table">
                     <thead>
                         <tr class="bg-">
-                            <th>Title</th>
-                            <th>Created</th>
-                            <th>Updated</th>
+                            <th>Role</th>
+                            <th>Permission</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>{{ $role->title }}</td>
-                            <td>{{ $role->created_at }}</td>
-                            <td>{{ $role->updated_at }}</td>
+                            <td>
+                                @forelse ($role->permission as $permission)
+                                    <span class="badge text-bg-primary">{{ $permission->title }}</span>
+                                @empty
+                                    <p>No Permission</p>
+                                @endforelse
+                            </td>
                         </tr>
                     </tbody>
                 </table>
