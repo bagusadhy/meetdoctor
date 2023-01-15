@@ -1,9 +1,10 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Auth\Access\Gate;
-use Illuminate\Validation\Rules\Password;
+namespace App\Http\Requests\User;
 
+use App\Models\User;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,6 +21,7 @@ class UpdateUserRequest extends FormRequest
     public function authorize()
     {
         // if return true, the function will automatically pass the request, so we will use middleware to check if the request is true or false
+        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return true;
     }
 
