@@ -60,7 +60,13 @@ class SpecialistController extends Controller
      */
     public function store(StoreSpecialistRequest $request)
     {
-        Specialist::create($request->all());
+        $data = $request->all();
+
+        // re format before push to table
+        $data['price'] = str_replace(',', '', $data['price']);
+        $data['price'] = str_replace('IDR ', '', $data['price']);
+
+        Specialist::create($data);
         return redirect(route('specialist.index'));
     }
 
@@ -97,7 +103,13 @@ class SpecialistController extends Controller
      */
     public function update(UpdateSpecialistRequest $request, Specialist $specialist)
     {
-        $specialist->update($request->all());
+        $data = $request->all();
+
+        // re format before push to table
+        $data['price'] = str_replace(',', '', $data['price']);
+        $data['price'] = str_replace('IDR ', '', $data['price']);
+
+        $specialist->update($data);
 
         return redirect(route('specialist.index'));
     }
