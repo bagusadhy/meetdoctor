@@ -6,6 +6,7 @@ use App\Models\MasterData\ConfigPayment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateConfigPaymentRequest extends FormRequest
 {
@@ -16,6 +17,7 @@ class UpdateConfigPaymentRequest extends FormRequest
      */
     public function authorize()
     {
+        abort_if(Gate::denies('config_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return true;
     }
 

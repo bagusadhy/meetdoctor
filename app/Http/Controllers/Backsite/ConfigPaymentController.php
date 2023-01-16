@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 // models
 use App\Models\MasterData\ConfigPayment;
 
@@ -31,6 +32,8 @@ class ConfigPaymentController extends Controller
      */
     public function index()
     {
+
+        abort_if(Gate::denies('config_payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $config = ConfigPayment::all();
 
         return view('pages.backsite.master-data.config-payment.index', compact('config'));
@@ -76,6 +79,7 @@ class ConfigPaymentController extends Controller
      */
     public function edit(ConfigPayment $configPayment)
     {
+        abort_if(Gate::denies('config_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('pages.backsite.master-data.config-payment.edit', compact('configPayment'));
     }
 
@@ -86,9 +90,16 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateConfigPaymentRequest $request, $id)
+    public function update(UpdateConfigPaymentRequest $request, ConfigPayment $configPayment)
     {
-        $config = ConfigPayment::find($id)->update($request->all());
+        $data = $request->all();
+
+        // re format before push to table
+        $data['fee'] = str_replace(',', '', $data['fee']);
+        $data['fee'] = str_replace('Rp. ', '', $data['fee']);
+        $data['vat'] = str_replace(',', '', $data['vat']);
+
+        $configPayment->update($data);
 
         alert()->success('Success Message', 'Successfully updated config payment');
         return redirect(route('config-payment.index'));
