@@ -64,9 +64,11 @@ class SpecialistController extends Controller
 
         // re format before push to table
         $data['price'] = str_replace(',', '', $data['price']);
-        $data['price'] = str_replace('IDR ', '', $data['price']);
+        $data['price'] = str_replace('Rp. ', '', $data['price']);
 
         Specialist::create($data);
+
+        alert()->success('Success Message', 'Successfully added new specialist');
         return redirect(route('specialist.index'));
     }
 
@@ -107,10 +109,11 @@ class SpecialistController extends Controller
 
         // re format before push to table
         $data['price'] = str_replace(',', '', $data['price']);
-        $data['price'] = str_replace('IDR ', '', $data['price']);
+        $data['price'] = str_replace('Rp. ', '', $data['price']);
 
         $specialist->update($data);
 
+        alert()->success('Success Message', 'Successfully updated specialist');
         return redirect(route('specialist.index'));
     }
 
@@ -125,6 +128,7 @@ class SpecialistController extends Controller
         abort_if(Gate::denies('specialist_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $specialist->delete();
 
+        alert()->success('Success Message', 'Successfully delete specialist');
         return back();
     }
 }
