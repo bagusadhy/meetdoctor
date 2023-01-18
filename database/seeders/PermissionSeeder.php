@@ -21,6 +21,16 @@ class PermissionSeeder extends Seeder
             [
                 'title'      => 'dashboard_access',
             ],
+            // menu
+            [
+                'title' => 'master_data_access',
+            ],
+            [
+                'title' => 'operational_access',
+            ],
+            [
+                'title' => 'management_access',
+            ],
             // user
             [
                 'title'      => 'user_access',
