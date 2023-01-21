@@ -101,26 +101,26 @@ class DoctorController extends Controller
                 $doctor['photo'] = "";
             }
 
+
+            // store to database (user)
+            $user = [];
+            $user['name'] = $doctor['name'];
+            $user['email'] = $request->email;
+            $user['password'] = Hash::make($user['email']);
+            $users = User::create($user);
+
             // store to databse (doctor)
-            $doctor = Doctor::create($doctor);
+            $doctor['user_id'] = $users['id'];
+            $doctors = Doctor::create($doctor);
 
-            // $user = [];
-            // $user['name'] = $doctor['name'];
-            // $user['email'] = $request->email;
-            // $user['password'] = Hash::make($user['email']);
+            // sync role 
+            $users->role()->sync(4);
 
-
-            // // store to database (user)
-            // $users = User::create($user);
-
-            // // sync role 
-            // $users->role()->sync(4);
-
-            // // save to detail user , to set type user
-            // $detail_user = new DetailUser;
-            // $detail_user->user_id = $users['id'];
-            // $detail_user->type_user_id = 2;
-            // $detail_user->save();
+            // save to detail user , to set type user
+            $detail_user = new DetailUser;
+            $detail_user->user_id = $users['id'];
+            $detail_user->type_user_id = 2;
+            $detail_user->save();
         });
 
         alert()->success('Success Message', 'Successfully added new doctor');
@@ -207,17 +207,31 @@ class DoctorController extends Controller
     {
         abort_if(Gate::denies('doctor_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // first checking old file to delete from storage
-        $get_item = $doctor['photo'];
 
-        $data = 'storage/' . $get_item;
-        if (File::exists($data)) {
-            File::delete($data);
-        } else {
-            File::delete('storage/app/public/' . $get_item);
+        // dd($doctor->user()->forceDelete());
+        // first checking old file to delete from storage
+        try {
+            DB::transaction(function () use ($doctor) {
+
+                $get_item = $doctor['photo'];
+
+                $data = 'storage/' . $get_item;
+                if (File::exists($data)) {
+                    File::delete($data);
+                } else {
+                    File::delete('storage/app/public/' . $get_item);
+                }
+
+                // dd($doctor);
+
+                $doctor->forceDelete();
+                $doctor->user()->forceDelete();
+            });
+        } catch (\Throwable $th) {
+            alert()->error('Error Message', 'Error while deleting doctor');
+            return redirect(route('doctor.index'));
         }
 
-        $doctor->forceDelete();
 
         alert()->success('Success Message', 'Successfully deleted doctor');
         return back();

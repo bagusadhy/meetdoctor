@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('doctor', function (Blueprint $table) {
             $table->foreign('specialist_id', 'fk_doctor_to_specialist')->references('id')->on('specialist')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('user_id', 'fk_doctor_to_users')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

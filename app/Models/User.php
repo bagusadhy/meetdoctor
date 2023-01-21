@@ -95,4 +95,10 @@ class User extends Authenticatable
         // 2 parameter(model tujuan, foreign key)
         return $this->hasMany(RoleUser::class, 'user_id');
     }
+
+    public function doctor()
+    {
+        // 2 parameters (model yang tujuan, foreign key)
+        return $this->hasMany(Doctor::class, 'user_id');
+    }
 }
