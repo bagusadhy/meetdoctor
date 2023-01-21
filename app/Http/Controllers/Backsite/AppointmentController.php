@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
+
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Operational\Appointment;
 
@@ -27,7 +31,17 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointment = Appointment::all();
+        abort_if(Gate::denies('appointment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $type_user = Auth::user()->detail_user->type_user_id;
+
+        if ($type_user == 1) {
+            $appointment = Appointment::all();
+        } else {
+            $appointment = Appointment::all();
+        }
+
+        // dd($appointment);
         return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }
 
