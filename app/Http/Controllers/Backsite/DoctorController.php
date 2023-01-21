@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 // request
 use App\Http\Requests\Doctor\StoreDoctorRequest;
@@ -17,9 +19,13 @@ use App\Http\Requests\Doctor\UpdateDoctorRequest;
 // use Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 // models and models related to
 use App\Models\Operational\Doctor;
+use App\Models\MasterData\Specialist;
+use App\Models\User;
+use App\Models\ManagementAccess\DetailUser;
 
 
 class DoctorController extends Controller
@@ -42,7 +48,12 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.doctor.index');
+        abort_if(Gate::denies('doctor_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $doctor = Doctor::all();
+        $specialist = Specialist::all();
+
+        return view('pages.backsite.operational.doctor.index', compact('doctor', 'specialist'));
     }
 
     /**
@@ -61,9 +72,59 @@ class DoctorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDoctorRequest $request)
     {
-        return abort(404);
+        abort_if(Gate::denies('doctor_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        DB::transaction(function () use ($request) {
+
+            // re format before push to table
+            $doctor = [];
+            $doctor['name'] = $request->name;
+            $doctor['specialist_id'] = $request->specialist_id;
+            $doctor['fee'] = str_replace(',', '', $request->fee);
+            $doctor['fee'] = str_replace('Rp.', '', $doctor['fee']);
+
+            // upload process here
+            $path = public_path('app/public/assets/file-doctor');
+            if (!File::isDirectory($path)) {
+                $response = Storage::makeDirectory('public/assets/file-doctor');
+            }
+
+            // change file locations
+            if (isset($request['photo'])) {
+                $doctor['photo'] = $request->file('photo')->store(
+                    'assets/file-doctor',
+                    'public'
+                );
+            } else {
+                $doctor['photo'] = "";
+            }
+
+            // store to databse (doctor)
+            $doctor = Doctor::create($doctor);
+
+            // $user = [];
+            // $user['name'] = $doctor['name'];
+            // $user['email'] = $request->email;
+            // $user['password'] = Hash::make($user['email']);
+
+
+            // // store to database (user)
+            // $users = User::create($user);
+
+            // // sync role 
+            // $users->role()->sync(4);
+
+            // // save to detail user , to set type user
+            // $detail_user = new DetailUser;
+            // $detail_user->user_id = $users['id'];
+            // $detail_user->type_user_id = 2;
+            // $detail_user->save();
+        });
+
+        alert()->success('Success Message', 'Successfully added new doctor');
+        return redirect(route('doctor.index'));
     }
 
     /**
@@ -84,9 +145,13 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Doctor $doctor)
     {
-        return abort(404);
+        abort_if(Gate::denies('doctor_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $specialist = Specialist::all();
+
+        return view('pages.backsite.operational.doctor.edit', compact('doctor', 'specialist'));
     }
 
     /**
@@ -96,9 +161,40 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-        return abort(404);
+        $data = $request->all();
+
+        $data['fee'] = str_replace(',', '', $data['fee']);
+        $data['fee'] = str_replace('Rp. ', '', $data['fee']);
+
+        // upload process here
+        // change format photo
+        if (isset($data['photo'])) {
+
+            // first checking old photo to delete from storage
+            $get_item = $doctor['photo'];
+
+            // change file locations
+            $data['photo'] = $request->file('photo')->store(
+                'assets/file-doctor',
+                'public'
+            );
+
+            // delete old photo from storage
+            $data_old = 'storage/' . $get_item;
+            if (File::exists($data_old)) {
+                File::delete($data_old);
+            } else {
+                File::delete('storage/app/public/' . $get_item);
+            }
+        }
+
+        // update to database
+        $doctor->update($data);
+
+        alert()->success('Success Message', 'Successfully updated doctor');
+        return redirect(route('doctor.index'));
     }
 
     /**
@@ -107,8 +203,23 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Doctor $doctor)
     {
-        return abort(404);
+        abort_if(Gate::denies('doctor_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // first checking old file to delete from storage
+        $get_item = $doctor['photo'];
+
+        $data = 'storage/' . $get_item;
+        if (File::exists($data)) {
+            File::delete($data);
+        } else {
+            File::delete('storage/app/public/' . $get_item);
+        }
+
+        $doctor->forceDelete();
+
+        alert()->success('Success Message', 'Successfully deleted doctor');
+        return back();
     }
 }
