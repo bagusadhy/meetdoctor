@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Models\Operational\Transaction;
 
@@ -27,8 +29,10 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::all();
-        return view('pages.backsite.operational.transaction.index', compact('transactions'));
+        abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $transaction = Transaction::all();
+        return view('pages.backsite.operational.transaction.index', compact('transaction'));
     }
 
     /**
