@@ -8,9 +8,9 @@
         <div class="lg:max-w-7xl lg:flex items-center mx-auto px-4 lg:px-14 pt-6 py-20 lg:py-24 gap-x-24">
         <!-- Detail Doctor  -->
             <div class="lg:w-5/12 lg:border-r h-72 lg:h-[30rem] flex flex-col items-center justify-center text-center">
-            <img src="{{ asset('assets/frontsite/images/doctor-1.png') }}" class="inline-block w-32 h-32 rounded-full bg-center object-cover object-top" alt="doctor-1"/>
-            <div class="text-[#1E2B4F] text-lg font-semibold mt-4">Dr. Galih Pratama</div>
-            <div class="text-[#AFAEC3] mt-1">Cardiologist</div>
+            <img src="{{ asset($doctor->photo) }}" class="inline-block w-32 h-32 rounded-full bg-center object-cover object-top" alt="doctor-1"/>
+            <div class="text-[#1E2B4F] text-lg font-semibold mt-4">Dr. {{ $doctor->name }}</div>
+            <div class="text-[#AFAEC3] mt-1">{{ $doctor->specialist->name }}</div>
             <div class="flex justify-center items-center gap-x-2 mt-4">
                 <div class="flex items-center gap-2">
                     <svg
@@ -84,24 +84,22 @@
                     New Appointment
                 </h2>
 
-                <form action="" class="mt-8 space-y-5">
+                <form action="{{ route('user_appointment.store') }}" method="POST" enctype="multipart/form-data" class="mt-8 space-y-5">
+                    @csrf
                     <label class="block">
                         <select
-                            name="topic"
-                            id="topic"
+                            name="consultation_id"
+                            id="consultation_id"
                             class="block w-full rounded-full py-4 text-[#1E2B4F] font-medium px-7 border border-[#d4d4d4] focus:outline-none focus:border-[#0D63F3]"
                             placeholder="Topik Konsultasi"
+                            required
                         >
-                            <option disabled selected class="hidden">
-                            Topik Konsultasi
+                            <option disabled value='' {{ old('consultation_id') == '' ? 'selected' : '' }} class="hidden">
+                                Topik Konsultasi
                             </option>
-                            <option value="Jantung Sesak">Jantung Sesak</option>
-                            <option value="Tekanan Darah Tinggi">
-                            Tekanan Darah Tinggi
-                            </option>
-                            <option value="Gangguan Irama Jantung">
-                            Gangguan Irama Jantung
-                            </option>
+                            @foreach ($consultation as $key => $consultation_item)
+                                <option value="{{ $consultation_item->id }}">{{ $consultation_item->name }}</option>
+                            @endforeach
                         </select>
                     </label>
 
@@ -110,11 +108,13 @@
                             name="level"
                             id="level"
                             class="block w-full rounded-full py-4 text-[#1E2B4F] font-medium px-7 border border-[#d4d4d4] focus:outline-none focus:border-[#0D63F3]"
-                            placeholder="Level">
+                            placeholder="Level"
+                            required
+                            >
                             <option value="" disabled selected class="hidden">Level</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
+                            <option value="1">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="3">High</option>
                         </select>
                     </label>
 
@@ -124,7 +124,9 @@
                             id="date"
                             name="date"
                             class="block w-full rounded-full py-4 text-[#1E2B4F] font-medium placeholder:text-[#AFAEC3] placeholder:font-normal px-7 border border-[#d4d4d4] focus:outline-none focus:border-[#0D63F3]"
-                            placeholder="Choose Date"/>
+                            placeholder="Choose Date"
+                            required
+                            />
                             <span
                             class="absolute top-0 right-[11px] bottom-1/2 translate-y-[58%]">
                                 <svg
@@ -172,6 +174,7 @@
                             name="time"
                             class="block w-full rounded-full py-4 text-[#1E2B4F] font-medium placeholder:text-[#AFAEC3] placeholder:font-normal px-7 border border-[#d4d4d4] focus:outline-none focus:border-[#0D63F3]"
                             placeholder="Choose Time"
+                            required
                         />
                         <span class="absolute top-0 right-[11px] bottom-1/2 translate-y-[58%]">
                             <svg
@@ -195,9 +198,11 @@
                             </svg>
                         </span>
                     </label>
+                    
+                    <input type="hidden" name="doctor_id" value="{{ $doctor->id ?? '' }}">
 
                     <div class="grid">
-                        <a href="{{ route('payment.index') }}" class="bg-[#0D63F3] rounded-full mt-5 text-white text-lg font-medium px-10 py-3 text-center">Continue</a>
+                        <input type="submit" class="bg-[#0D63F3] rounded-full mt-5 text-white text-lg font-medium px-10 py-3 text-center" value="Continue">
                     </div>
                 </form>
             </div>
@@ -207,26 +212,27 @@
 @endsection
 
 @push('after-style')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+    <link rel="stylesheet" href="{{ url('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css') }}"/>
 @endpush
 
 @push('after-script')
     <script src="{{ url('https://cdn.jsdelivr.net/npm/flatpickr') }}"></script>
 
     <script>
-      // Date Picker
+        // Date Picker
         const fpDate = flatpickr('#date', {
             altInput: true,
-            altFormat: 'j F Y',
+            altFormat: 'd F Y',
             dateFormat: 'Y-m-d',
             disableMobile: 'true',
         });
 
-      // Time Picker
+        // Time Picker
         const fpTime = flatpickr('#time', {
+            time_24hr: true,
             enableTime: true,
             noCalendar: true,
-            dateFormat: 'H:i K',
+            dateFormat: 'H:i',
             disableMobile: 'true',
         });
     </script>

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Operational\Doctor;
 use App\Models\MasterData\Consultation;
+use App\Models\Operational\Appointment;
 
 class AppointmentController extends Controller
 {
@@ -27,7 +28,7 @@ class AppointmentController extends Controller
         // this code, for security
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -56,7 +57,19 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        return abort(404);
+        $data = $request->all();
+
+        $appointment = new Appointment;
+        $appointment->doctor_id = $data['doctor_id'];
+        $appointment->user_id = Auth::user()->id;
+        $appointment->consultation_id = $data['consultation_id'];
+        $appointment->level = $data['level'];
+        $appointment->date = $data['date'];
+        $appointment->time = $data['time'];
+        $appointment->status = 2; // set to waiting payment
+        $appointment->save();
+
+        return redirect(route('payment.appointment', $appointment->id));
     }
 
     /**
@@ -102,5 +115,13 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         return abort(404);
+    }
+
+    public function appointment($doctor_id)
+    {
+        $doctor = Doctor::find($doctor_id)->first();
+        $consultation = Consultation::all();
+
+        return view('pages.frontsite.appointment.index', compact('doctor', 'consultation'));
     }
 }

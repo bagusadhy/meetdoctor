@@ -11,12 +11,12 @@
             <!-- Doctor Information -->
                 <div class="flex flex-wrap items-center space-x-5">
                     <div class="flex-shrink-0">
-                        <img src="{{ asset('assets/frontsite/images/doctor-1.png') }}" class="w-20 h-20 rounded-full bg-center object-cover object-top" alt="Doctor 1"/>
+                        <img src="{{ asset($appointment->doctor->photo) }}" class="w-20 h-20 rounded-full bg-center object-cover object-top" alt="Doctor 1"/>
                     </div>
 
                     <div class="flex-1 space-y-1">
-                        <div class="text-[#1E2B4F] text-lg font-semibold">Dr. Galih Pratama</div>
-                        <div class="text-[#AFAEC3]">Cardiologist</div>
+                        <div class="text-[#1E2B4F] text-lg font-semibold">Dr. {{ $appointment->doctor->name }}</div>
+                        <div class="text-[#AFAEC3]">{{ $appointment->doctor->specialist->name }}</div>
 
                         <!--
                             Icon when mobile is show.
@@ -155,22 +155,30 @@
                     <h5 class="text-[#1E2B4F] text-lg font-semibold">Appointment</h5>
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Kebutuhan konsultasi</div>
-                        <div class="text-[#1E2B4F] font-medium">Jantung sesak</div>
+                        <div class="text-[#1E2B4F] font-medium">{{ $appointment->consultation->name }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Level</div>
-                        <div class="text-[#1E2B4F] font-medium">Medium</div>
+                        @if ($appointment->level == 1)
+                            <div class="text-[#1E2B4F] font-medium">Low</div>
+                        @elseif ($appointment->level == 2)
+                            <div class="text-[#1E2B4F] font-medium">Medium</div>
+                        @elseif ($appointment->level == 3)
+                            <div class="text-[#1E2B4F] font-medium">High</div>
+                        @else
+                            {{ 'N/A' }}
+                        @endif
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Dijadwalkan pada</div>
-                        <div class="text-[#1E2B4F] font-medium">12 Januari 2022</div>
+                        <div class="text-[#1E2B4F] font-medium">{{ date('d-M-Y', strtotime($appointment->date)) }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Waktu</div>
-                        <div class="text-[#1E2B4F] font-medium">15:30 PM</div>
+                        <div class="text-[#1E2B4F] font-medium">15:30 PM {{ date('H:i', strtotime($appointment->time)) }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
@@ -186,27 +194,27 @@
                     </h5>
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Biaya konsultasi</div>
-                        <div class="text-[#1E2B4F] font-medium">$5,000</div>
+                        <div class="text-[#1E2B4F] font-medium">Rp.{{ number_format($appointment->doctor->specialist->price) }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Fee dokter</div>
-                        <div class="text-[#1E2B4F] font-medium">$200</div>
+                        <div class="text-[#1E2B4F] font-medium">Rp.{{ number_format($appointment->doctor->fee) }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Fee hospital</div>
-                        <div class="text-[#1E2B4F] font-medium">$10</div>
+                        <div class="text-[#1E2B4F] font-medium">Rp.{{ number_format($config_payment->fee) }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
-                        <div class="text-[#AFAEC3] font-medium">VAT 20%</div>
-                        <div class="text-[#1E2B4F] font-medium">$372</div>
+                        <div class="text-[#AFAEC3] font-medium">VAT {{ $config_payment->vat }}%</div>
+                        <div class="text-[#1E2B4F] font-medium">Rp.{{ number_format($total_with_vat) }}</div>
                     </div>
 
                     <div class="flex items-center justify-between mt-5">
                         <div class="text-[#AFAEC3] font-medium">Grand total</div>
-                        <div class="text-[#2AB49B] font-semibold">$6,500</div>
+                        <div class="text-[#2AB49B] font-semibold">Rp.{{ number_format($grand_total) }}</div>
                     </div>
                 </div>
             </div>
@@ -217,7 +225,8 @@
                     Choose Your <br />
                     Payment Method
                 </h3>
-                <form action="" x-data="{ payment: '' }" class="mt-8">
+                <form action="{{ route('payment.store') }}" method="POST" x-data="{ payment: '' }" enctype="multipart/form-data" class="mt-8">
+                    @csrf
                 <!-- List Payment -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-5">
                         <div class="relative">
@@ -285,12 +294,13 @@
                     </div>
 
                     <div class="mt-10 grid">
+
+                        <input type="hidden" name="appointment_id" value="{{ $appointment_id ?? '' }}">
+
                         <!--
                             button when payment is filled.
                         -->
-                        <a href="booking-success.html" class="bg-[#0D63F3] text-white px-10 py-3 rounded-full text-center" x-show="payment.length">
-                            Pay Now
-                        </a>
+                        <input type="submit" class="bg-[#0D63F3] text-white px-10 py-3 rounded-full text-center" x-show="payment.length" value="Pay Now">
 
                         <!--
                             button when payment is empty.

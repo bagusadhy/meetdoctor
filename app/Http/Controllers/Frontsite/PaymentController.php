@@ -60,7 +60,42 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        return abort(404);
+        $data = $request->all();
+
+
+        $appointment = Appointment::where('id', $data['appointment_id'])->first();
+        $config_payment = ConfigPayment::first();
+
+        // set transaction
+        $specialist_fee = $appointment->doctor->specialist->price;
+        $doctor_fee = $appointment->doctor->fee;
+        $hospital_fee = $config_payment->fee;
+        $hospital_vat = $config_payment->vat;
+
+        // total
+        $total = $specialist_fee + $doctor_fee + $hospital_fee;
+
+        // total with vat and grand total
+        $total_with_vat = ($total * $hospital_vat) / 100;
+        $grand_total = $total + $total_with_vat;
+
+        // save to database
+        $transaction = new Transaction;
+        $transaction->appointment_id = $appointment['id'];
+        $transaction->fee_doctor = $doctor_fee;
+        $transaction->fee_specialist = $specialist_fee;
+        $transaction->fee_hospital = $hospital_fee;
+        $transaction->sub_total = $total;
+        $transaction->vat = $total_with_vat;
+        $transaction->total = $grand_total;
+        $transaction->save();
+
+        // update status appointment
+        $appointment = Appointment::find($appointment->id);
+        $appointment->status = 1; // set to completed payment
+        $appointment->save();
+
+        return redirect(route('payment.success'));
     }
 
     /**
@@ -106,5 +141,28 @@ class PaymentController extends Controller
     public function destroy($id)
     {
         return abort(404);
+    }
+
+    public function payment($appointment_id)
+    {
+        $appointment = Appointment::find($appointment_id)->first();
+        $config_payment  = ConfigPayment::first();
+
+        $specialist_fee = $appointment->doctor->specialist->fee;
+        $doctor_fee = $appointment->doctor->fee;
+        $hospital_fee = $config_payment->fee;
+        $hospital_vat = $config_payment->vat;
+
+        $total = $specialist_fee + $doctor_fee + $hospital_fee;
+
+        $total_with_vat = ($total * $hospital_vat) / 100;
+        $grand_total = $total + $total_with_vat;
+
+        return view('pages.frontsite.payment.index', compact('appointment', 'config_payment', 'total_with_vat', 'grand_total', 'appointment_id'));
+    }
+
+    public function success()
+    {
+        return view('pages.frontsite.success.payment-success');
     }
 }
