@@ -81,6 +81,19 @@
                                 </a>
                             </div>
                         </form>
+
+                        {{-- login google --}}
+                        <div class="mt-8 grid gap-6">
+                            <p class="text-center text-sm text-[#AFAEC3]">or</p>
+                            <a href="{{ route('user.login.google') }}" class="flex gap-2 justify-center items-center text-center text-[#1E2B4F] text-lg font-medium bg-[#f8f8f8] px-10 py-4 rounded-full border border-[#141e38]">
+                                <span><img
+                                    src="{{ asset('assets/frontsite/images/icon-google.png') }}"
+                                    class="h-[30px]"
+                                    alt=""
+                                /></span> 
+                                Log In With Google
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -22,6 +22,10 @@ use App\Http\Controllers\Backsite\UserTypeController;
 use App\Http\Controllers\Frontsite\AppointmentController;
 use App\Http\Controllers\Frontsite\LandingController;
 use App\Http\Controllers\Frontsite\PaymentController;
+
+// auth
+use App\Http\Controllers\Auth\SocialAuthController;;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +40,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('/', LandingController::class);
+
+// socialite routes
+Route::get('sign-in-google', [SocialAuthController::class, 'google'])->name('user.login.google');
+Route::get('auth/google/callback', [SocialAuthController::class, 'handleProviderCallback'])->name('google.user.callback');
+
 
 // route for fronsite
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

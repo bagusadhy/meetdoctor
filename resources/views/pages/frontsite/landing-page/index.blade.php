@@ -62,9 +62,11 @@
 
                     <!-- CTA Button -->
                         <div class="grid lg:flex flex-wrap mt-20 gap-5">
-                            <a href="{{ route('register') }}" class="text-white text-lg font-medium text-center bg-[#0D63F3] rounded-full px-12 py-3">
-                            Sign Up
-                            </a>
+                            @guest
+                                <a href="{{ route('register') }}" class="text-white text-lg font-medium text-center bg-[#0D63F3] rounded-full px-12 py-3">
+                                    Sign Up
+                                </a>
+                            @endguest
                             <a href="#" class="text-[#1E2B4F] text-lg font-medium text-center bg-[#F2F6FE] rounded-full px-16 py-3">
                             Story
                             </a>
