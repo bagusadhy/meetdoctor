@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Operational\Appointment;
+use App\Models\Operational\Doctor;
 
 class AppointmentController extends Controller
 {
@@ -37,11 +38,18 @@ class AppointmentController extends Controller
 
         if ($type_user == 1) {
             $appointment = Appointment::all();
-        } else {
-            $appointment = Appointment::all();
-        }
+        } elseif ($type_user == 2) {
 
-        // dd($appointment);
+            $user_id = Auth::user()->id;
+
+            $doctor_id = Doctor::where('user_id', $user_id)->pluck('id');
+
+            $appointment = Appointment::where('doctor_id', $doctor_id)->get();
+        } else {
+
+            $user_id = Auth::user()->id;
+            $appointment = Appointment::where('user_id', $user_id)->get();
+        }
         return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }
 
