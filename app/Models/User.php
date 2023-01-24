@@ -99,6 +99,6 @@ class User extends Authenticatable
     public function doctor()
     {
         // 2 parameters (model yang tujuan, foreign key)
-        return $this->hasMany(Doctor::class, 'user_id');
+        return $this->hasOne(Doctor::class, 'user_id');
     }
 }
