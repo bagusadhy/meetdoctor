@@ -139,7 +139,7 @@
                                         <div class="text-base font-medium text-[#1E2B4F]">
                                             Hi, {{ Auth::user()->name }}
                                         </div>
-                                        <div class="text-sm text-[#AFAEC3]">Pasien</div>
+                                        <div class="text-sm text-[#AFAEC3]">{{ Auth::user()->role[0]['title'] }}</div>
                                     </div>
                                     <img
                                         class="h-12 w-12 rounded-full ring-1 ring-offset-4 ring-[#0D63F3]"
