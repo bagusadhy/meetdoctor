@@ -91,7 +91,7 @@
                                     class="h-[30px]"
                                     alt=""
                                 /></span> 
-                                Log In With Google
+                                Sign Up With Google
                             </a>
                         </div>
                     </div>
