@@ -20,13 +20,15 @@
                     <div class="mt-12">
 
                         @if (session('status'))
-                            <div class="mb-4 font-medium text-sm text-green-600">
-                                {{ session('status') }}
+                            <div class="p-7 text-base" style="background-color: rgb(254, 226, 226); color:rgb(185, 28, 28)" role="alert">
+                                <ul>
+                                    <li style="color:rgb(185, 28, 28)">{{ session('status') }}</li>
+                                </ul>
                             </div>
                         @endif
 
                         <!-- Form input -->
-                        <form method="POST" action="{{ route('login') }}" class="grid gap-6">
+                        <form method="POST" action="{{ route('login') }}" class="grid gap-6 mt-6">
                             @csrf()
                             <label class="block">
                                 <input
