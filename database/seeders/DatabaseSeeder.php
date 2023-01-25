@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             RoleUserSeeder::class,
             PermissionSeeder::class,
             PermissionRoleSeeder::class,
+            DoctorSeeder::class,
         ]);
     }
 }
