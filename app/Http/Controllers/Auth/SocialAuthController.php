@@ -32,53 +32,57 @@ class SocialAuthController extends Controller
     public function handleProviderCallback()
     {
         try {
-            $user = Socialite::driver('google')->user();
+
+            $callback = Socialite::driver('google')->user();
         } catch (\Throwable $th) {
+
             return redirect(route('login'));
         }
 
-
         // check if they're an existing user
-        $existingUser = User::where('email', $user->email)->first();
+        $user = User::where('email', $callback->email)->first();
 
+        if ($user) {
 
-        if ($existingUser) {
-            Auth::login($existingUser, true);
+            $callback_password = Hash::make($callback->email);
+            if ($user->email == $callback->email && $user->password == $callback_password) {
+
+                Auth::login($user, true);
+                return redirect(route('index'));
+            } else {
+
+                return redirect('login')->with('status', 'Email used');
+            }
         } else {
 
-            try {
-                //code...
-                return DB::transaction(function () use ($user) {
-                    return tap(User::create([
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'password' => Hash::make($user->email),
+            $user = DB::transaction(function () use ($callback) {
+                $data = [
+                    'name' => $callback->getName(),
+                    'email' => $callback->getEmail(),
+                    'password' => Hash::make($callback->getEmail()),
+                ];
 
-                        //take user avatar from image
-                        $photo = $user->avatar
-                    ]), function (User $user) use ($photo) {
+                $user = User::create($data);
 
-                        // add to role user data
-                        $user->role()->sync(5);
+                // synchronized to role 
+                $user->role()->sync(5);
 
-                        // add to detail users
-                        $detail_user = new DetailUser;
-                        $detail_user->user_id = $user->id;
-                        $detail_user->type_user_id = 3;
-                        $detail_user->contact = NULL;
-                        $detail_user->address = NULL;
-                        $detail_user->photo = $photo;
-                        $detail_user->gender = NULL;
+                // create details user
+                $detail_user = new DetailUser;
+                $detail_user->user_id = $user->id;
+                $detail_user->type_user_id = 3;
+                $detail_user->contact = NULL;
+                $detail_user->address = NULL;
+                $detail_user->photo = $callback->getAvatar();
+                $detail_user->gender = NULL;
 
-                        $detail_user->save();
-                    });
-                });
-            } catch (\Throwable $th) {
-                //throw $th;
-                return redirect(route('login'));
-            }
+                $detail_user->save();
+
+                return $user;
+            });
         }
 
+        Auth::login($user, true);
         return redirect(route('index'));
     }
 }
