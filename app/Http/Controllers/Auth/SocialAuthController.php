@@ -44,8 +44,7 @@ class SocialAuthController extends Controller
 
         if ($user) {
 
-            $callback_password = Hash::make($callback->email);
-            if ($user->email == $callback->email && $user->password == $callback_password) {
+            if ($user->email == $callback->email && Hash::check($callback->email, $user->password)) {
 
                 Auth::login($user, true);
                 return redirect(route('index'));
