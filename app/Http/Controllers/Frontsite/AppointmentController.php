@@ -121,7 +121,19 @@ class AppointmentController extends Controller
     {
         $doctor = Doctor::find($doctor_id)->first();
         $consultation = Consultation::all();
+        $appointment = Appointment::where('doctor_id', $doctor_id)->pluck('date')->toArray();
 
-        return view('pages.frontsite.appointment.index', compact('doctor', 'consultation'));
+
+        $date = array_count_values($appointment);
+
+        $tanggal = [];
+        foreach ($date as $key => $value) {
+            if ($value == 3) {
+                array_push($tanggal, $key);
+            }
+        }
+
+
+        return view('pages.frontsite.appointment.index', compact('doctor', 'consultation', 'tanggal'));
     }
 }

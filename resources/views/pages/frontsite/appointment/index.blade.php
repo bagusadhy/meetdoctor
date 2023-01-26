@@ -9,7 +9,7 @@
         <!-- Detail Doctor  -->
             <div class="lg:w-5/12 lg:border-r h-72 lg:h-[30rem] flex flex-col items-center justify-center text-center">
             <img src="{{ asset($doctor->photo) }}" class="inline-block w-32 h-32 rounded-full bg-center object-cover object-top" alt="doctor-1"/>
-            <div class="text-[#1E2B4F] text-lg font-semibold mt-4">Dr. {{ $doctor->name }}</div>
+            <div class="text-[#1E2B4F] text-lg font-semibold mt-4">{{ $doctor->name }}</div>
             <div class="text-[#AFAEC3] mt-1">{{ $doctor->specialist->name }}</div>
             <div class="flex justify-center items-center gap-x-2 mt-4">
                 <div class="flex items-center gap-2">
@@ -197,6 +197,7 @@
                                     stroke-linejoin="round"/>
                             </svg>
                         </span>
+                        <p style="font-size: 10px; color: rgb(124, 121, 121)">* jam kerja 09.00-16.00</p>
                     </label>
                     
                     <input type="hidden" name="doctor_id" value="{{ $doctor->id ?? '' }}">
@@ -219,13 +220,48 @@
     <script src="{{ url('https://cdn.jsdelivr.net/npm/flatpickr') }}"></script>
 
     <script>
-        // Date Picker
+
+    
+        var date  = @json(json_encode($tanggal));
+
+    
+        var clear1 = date.replace("[", "");
+        var clear2 = clear1.replace("]", "");
+        var clear3 = clear2.replaceAll(",", ", ");
+        var clear4 = clear3.replaceAll('"', "");
+
+
+        
+        function disableDate(clear){
+
+            var strArray = clear.split(", ");
+            
+            var date = []
+            // Display array values on page
+            for(var i = 0; i < strArray.length; i++){
+                date.push(strArray[i]);
+            }
+
+            return date;
+        };
         const fpDate = flatpickr('#date', {
             altInput: true,
             altFormat: 'd F Y',
             dateFormat: 'Y-m-d',
             disableMobile: 'true',
+            minDate: "today",
+            disable: disableDate(clear4),
+            locale: {
+                "firstDayOfWeek": 1 // start week on Monday
+            }
         });
+
+
+
+    
+        // set current time
+        var date = new Date();
+        var currentTime = date.getHours() + ":" + date.getMinutes();
 
         // Time Picker
         const fpTime = flatpickr('#time', {
@@ -234,6 +270,9 @@
             noCalendar: true,
             dateFormat: 'H:i',
             disableMobile: 'true',
+            defaultDate: currentTime,
+            minTime: "09.00",
+            maxTime: "16:00"
         });
     </script>
 @endpush
