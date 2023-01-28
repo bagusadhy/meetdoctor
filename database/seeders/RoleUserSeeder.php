@@ -22,5 +22,9 @@ class RoleUserSeeder extends Seeder
         User::findOrFail(3)->role()->sync(4);
         User::findOrFail(4)->role()->sync(4);
         User::findOrFail(5)->role()->sync(4);
+        User::findOrFail(6)->role()->sync(4);
+        User::findOrFail(7)->role()->sync(4);
+        User::findOrFail(8)->role()->sync(4);
+        User::findOrFail(9)->role()->sync(4);
     }
 }

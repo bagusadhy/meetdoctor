@@ -57,6 +57,38 @@ class DetailUserSeeder extends Seeder
                 'photo' => null,
                 'gender' => null,
             ],
+            [
+                'user_id' => 6,
+                'type_user_id' => 2,
+                'contact' => null,
+                'address' => null,
+                'photo' => null,
+                'gender' => null,
+            ],
+            [
+                'user_id' => 7,
+                'type_user_id' => 2,
+                'contact' => null,
+                'address' => null,
+                'photo' => null,
+                'gender' => null,
+            ],
+            [
+                'user_id' => 8,
+                'type_user_id' => 2,
+                'contact' => null,
+                'address' => null,
+                'photo' => null,
+                'gender' => null,
+            ],
+            [
+                'user_id' => 9,
+                'type_user_id' => 2,
+                'contact' => null,
+                'address' => null,
+                'photo' => null,
+                'gender' => null,
+            ],
         ];
 
         DetailUser::insert($detail_user);

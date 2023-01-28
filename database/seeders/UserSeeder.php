@@ -48,6 +48,30 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('andre.@gmail.com'),
                 'remember_token' => null,
             ],
+            [
+                'name' => 'Dr. Ander',
+                'email' => 'ander@gmail.com',
+                'password' => Hash::make('ander@gmail.com'),
+                'remember_token' => null,
+            ],
+            [
+                'name' => 'Dr. Muti',
+                'email' => 'muti@gmail.com',
+                'password' => Hash::make('muti@gmail.com'),
+                'remember_token' => null,
+            ],
+            [
+                'name' => 'Dr. Sapir',
+                'email' => 'sapir@gmail.com',
+                'password' => Hash::make('sapir@gmail.com'),
+                'remember_token' => null,
+            ],
+            [
+                'name' => 'Dr. Elsa',
+                'email' => 'elsa@gmail.com',
+                'password' => Hash::make('elsa@gmail.com'),
+                'remember_token' => null,
+            ],
         ];
 
         User::insert($user);
