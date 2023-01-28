@@ -24,7 +24,8 @@ use App\Http\Controllers\Frontsite\LandingController;
 use App\Http\Controllers\Frontsite\PaymentController;
 
 // auth
-use App\Http\Controllers\Auth\SocialAuthController;;
+use App\Http\Controllers\Auth\SocialAuthController;
+use App\Models\Operational\Appointment;;
 
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,11 @@ Route::get('sign-in-google', [SocialAuthController::class, 'google'])->name('use
 Route::get('auth/google/callback', [SocialAuthController::class, 'handleProviderCallback'])->name('google.user.callback');
 
 
+// midtrans routes
+Route::get('payment/success', [AppointmentController::class, 'midtransCallback']);
+Route::post('payment/success', [AppointmentController::class, 'midtransCallback']);
+
+
 // route for fronsite
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // appointment page
@@ -53,7 +59,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('user_appointment', AppointmentController::class);
 
     // payment page
-    Route::get('payment/success', [PaymentController::class, 'success'])->name('payment.success');
+    Route::get('payment/transaction/{id}', [PaymentController::class, 'transaction'])->name('payment.transaction');
     Route::get('payment/appointment/{id}', [PaymentController::class, 'payment'])->name('payment.appointment');
     Route::resource('payment', PaymentController::class);
 });

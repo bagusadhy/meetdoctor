@@ -225,91 +225,9 @@
                     Choose Your <br />
                     Payment Method
                 </h3>
-                <form action="{{ route('payment.store') }}" method="POST" x-data="{ payment: '' }" enctype="multipart/form-data" class="mt-8">
-                    @csrf
-                <!-- List Payment -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-5">
-                        <div class="relative">
-                            <input
-                            type="radio"
-                            name="payment"
-                            x-model="payment"
-                            value="master-card"
-                            id="master-card"
-                            class="sr-only peer"/>
-                            <label
-                                class="flex flex-col justify-center items-center bg-white border-[#EDEDED] cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-[#0D63F3] peer-checked:ring-2 peer-checked:border-transparent rounded-3xl border-2 p-7"
-                                for="master-card">
-                                <img src="{{ asset('assets/frontsite/images/master-card.png') }}" class="max-h-[50px] inline-block" alt="Master card"/>
-                            </label>
-                        </div>
-
-                        <div class="relative">
-                            <input
-                            type="radio"
-                            name="payment"
-                            x-model="payment"
-                            value="visa"
-                            id="visa"
-                            class="sr-only peer"/>
-                            <label
-                            class="flex flex-col justify-center items-center bg-white border-[#EDEDED] cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-[#0D63F3] peer-checked:ring-2 peer-checked:border-transparent rounded-3xl border-2 p-7"
-                            for="visa">
-                                <img src="{{ asset('assets/frontsite/images/visa.png') }}" class="max-h-[50px] inline-block" alt="Master card"/>
-                            </label>
-                        </div>
-
-                        <div class="relative">
-                            <input
-                            type="radio"
-                            name="payment"
-                            x-model="payment"
-                            value="cirrus"
-                            id="cirrus"
-                            class="sr-only peer"
-                            />
-                            <label
-                            class="flex flex-col justify-center items-center bg-white border-[#EDEDED] cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-[#0D63F3] peer-checked:ring-2 peer-checked:border-transparent rounded-3xl border-2 p-7"
-                            for="cirrus"
-                            >
-                                <img src="{{ asset('assets/frontsite/images/cirrus.png') }}" class="max-h-[50px] inline-block" alt="Master card"/>
-                            </label>
-                        </div>
-
-                        <div class="relative">
-                            <input
-                            type="radio"
-                            name="payment"
-                            x-model="payment"
-                            value="mewallet"
-                            id="mewallet"
-                            class="sr-only peer"/>
-                            <label
-                            class="flex flex-col justify-center items-center bg-white border-[#EDEDED] cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-[#0D63F3] peer-checked:ring-2 peer-checked:border-transparent rounded-3xl border-2 p-7"
-                            for="mewallet">
-                                <img src="{{ asset('assets/frontsite/images/mewallet.png') }}" class="max-h-[50px] inline-block"alt="Master card"/>
-                                <div class="text-[11px] sm:text-sm mt-3">Balance: $18,000</div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="mt-10 grid">
-
-                        <input type="hidden" name="appointment_id" value="{{ $appointment_id ?? '' }}">
-
-                        <!--
-                            button when payment is filled.
-                        -->
-                        <input type="submit" class="bg-[#0D63F3] text-white px-10 py-3 rounded-full text-center" x-show="payment.length" value="Pay Now">
-
-                        <!--
-                            button when payment is empty.
-                        -->
-                        <span x-show="!payment.length" class="bg-[#C0CADA] text-[#808997] cursor-not-allowed px-10 py-3 rounded-full text-center">
-                            Pay Now
-                        </span>
-                    </div>
-                </form>
+                <div class="mt-8">
+                <a href="{{ url($appointment->midtrans_url) }}" class="bg-[#0D63F3] text-white px-10 py-3 rounded-full text-center mt-8">Pay With MidTrans</a> 
+                </div>
             </div>
         </div>
     </div>

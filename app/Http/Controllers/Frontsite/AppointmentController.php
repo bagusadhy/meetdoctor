@@ -9,12 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
+use Midtrans;
 
 // model
 use App\Models\User;
 use App\Models\Operational\Doctor;
 use App\Models\MasterData\Consultation;
 use App\Models\Operational\Appointment;
+use App\Models\MasterData\ConfigPayment;
+use App\Models\Operational\Transaction;
 
 class AppointmentController extends Controller
 {
@@ -27,6 +32,12 @@ class AppointmentController extends Controller
     {
         // this code, for security
         $this->middleware('auth');
+
+        // midtrans
+        Midtrans\Config::$serverKey = env('MIDTRANS_SERVERKEY');
+        Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+        Midtrans\Config::$isSanitized = env('MIDTRANS_IS_SANITIZED');
+        Midtrans\Config::$is3ds = env('MIDTRANS_IS_3DS');
     }
 
     /**
@@ -66,8 +77,9 @@ class AppointmentController extends Controller
         $appointment->level = $data['level'];
         $appointment->date = $data['date'];
         $appointment->time = $data['time'];
-        $appointment->status = 2; // set to waiting payment
         $appointment->save();
+
+        $this->getSnapRedirect($appointment);
 
         return redirect(route('payment.appointment', $appointment->id));
     }
@@ -134,7 +146,96 @@ class AppointmentController extends Controller
             }
         }
 
-
         return view('pages.frontsite.appointment.index', compact('doctor', 'consultation', 'tanggal'));
+    }
+
+    public function getSnapRedirect(Appointment $appointment)
+    {
+        $order_id = $appointment->id . '-' . Str::random(5);
+        $gross_amount = $this->getPaymentDetails($appointment);
+        $appointment->midtrans_booking_code = $order_id;
+
+        $appointment_details = [
+            'order_id' => $order_id,
+            'gross_amount' => $gross_amount
+        ];
+
+        $midtrans_params = [
+            'transaction_details' => $appointment_details
+        ];
+
+        try {
+            $paymentUrl = Midtrans\Snap::createTransaction($midtrans_params)->redirect_url;
+            $appointment->midtrans_url = $paymentUrl;
+            $appointment->save();
+
+            return $paymentUrl;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
+    public function getPaymentDetails(Appointment $appointment)
+    {
+        $appointment = Appointment::find($appointment->id)->first();
+        $config_payment  = ConfigPayment::first();
+
+        $specialist_fee = $appointment->doctor->specialist->fee;
+        $doctor_fee = $appointment->doctor->fee;
+        $hospital_fee = $config_payment->fee;
+        $hospital_vat = $config_payment->vat;
+
+        $total = $specialist_fee + $doctor_fee + $hospital_fee;
+
+        $total_with_vat = ($total * $hospital_vat) / 100;
+        $grand_total = $total + $total_with_vat;
+
+        return $grand_total;
+    }
+
+    public function midtransCallback(Request $request)
+    {
+        $notif = $request->getMethod() == 'POST' ? new Midtrans\Notification() : Midtrans\Transaction::status($request['order_id']);
+
+        $transaction_status = $notif->transaction_status;
+        $fraud = $notif->fraud_status;
+
+        $appointment_id = explode('-', $notif->order_id)[0];
+        $appointment = Appointment::find($appointment_id);
+
+        if ($transaction_status == 'capture') {
+            if ($fraud == 'challenge') {
+                // TODO Set payment status in merchant's database to 'challenge'
+                $appointment->payment_status = 'pending';
+            } else if ($fraud == 'accept') {
+                // TODO Set payment status in merchant's database to 'success'
+                $appointment->payment_status = 'paid';
+            }
+        } else if ($transaction_status == 'cancel') {
+            if ($fraud == 'challenge') {
+                // TODO Set payment status in merchant's database to 'failure'
+                $appointment->payment_status = 'failed';
+            } else if ($fraud == 'accept') {
+                // TODO Set payment status in merchant's database to 'failure'
+                $appointment->payment_status = 'failed';
+            }
+        } else if ($transaction_status == 'deny') {
+            // TODO Set payment status in merchant's database to 'failure'
+            $appointment->payment_status = 'failed';
+        } else if ($transaction_status == 'settlement') {
+            // TODO set payment status in merchant's database to 'Settlement'
+            $appointment->payment_status = 'success';
+        } else if ($transaction_status == 'pending') {
+            // TODO set payment status in merchant's database to 'Pending'
+            $appointment->payment_status = 'pending';
+        } else if ($transaction_status == 'expire') {
+            // TODO set payment status in merchant's database to 'expire'
+            $appointment->payment_status = 'failed';
+        }
+
+        $appointment->save();
+
+        return redirect(route('payment.transaction', $appointment->id));
     }
 }
