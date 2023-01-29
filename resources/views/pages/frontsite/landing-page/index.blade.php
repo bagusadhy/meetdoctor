@@ -106,7 +106,10 @@
         <section class="mt-4 lg:mt-16">
             <div class="mx-auto max-w-7xl px-4 lg:px-14 py-14">
                 <h3 class="text-[#1E2B4F] text-2xl font-semibold">Best Doctors</h3>
-                <p class="text-[#A7B0B5] mt-2">Help your life much better</p>
+                <div class="flex justify-between">
+                    <p class="text-[#A7B0B5] mt-2">Help your life much better</p>
+                    <a href="{{ route('appointment.all.doctor') }}" class="mt-2 text-[#1E2B4F] font-semibold" style="text-decoration: underline rgb(30 43 79) 2px">All doctors</a>
+                </div>
 
                 <!-- Card -->
                 <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 lg:gap-10 mt-10">
