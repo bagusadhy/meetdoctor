@@ -30,24 +30,14 @@
                             class="text-[#1E2B4F] relative {{ request()->is('/') ? "after:absolute after:content-[''] after:border-b-2 after:border-[#0D63F5] after:w-8/12 after:-translate-x-1/2 after:bottom-3 after:left-1/2 font-semibold inline-flex items-center px-1 text-lg" : "hover:text-gray-500 inline-flex items-center px-1 pt-1 text-lg font-medium" }} "
                         >
                             Home
+                            
                         </a>
                         <a
-                            href="#"
-                            class="text-[#1E2B4F] relative hover:text-gray-500 inline-flex items-center px-1 pt-1 text-lg font-medium"
+                            href="{{ route('appointment.all.doctor') }}"
+                            class="text-[#1E2B4F] relative {{ request()->is('appointment/doctor') ? "after:absolute after:content-[''] after:border-b-2 after:border-[#0D63F5] after:w-8/12 after:-translate-x-1/2 after:bottom-3 after:left-1/2 font-semibold inline-flex items-center px-1 text-lg" : "hover:text-gray-500 inline-flex items-center px-1 pt-1 text-lg font-medium" }} "
                         >
-                            Featured
-                        </a>
-                        <a
-                            href="#"
-                            class="text-[#1E2B4F] relative hover:text-gray-500 inline-flex items-center px-1 pt-1 text-lg font-medium"
-                        >
-                            Category
-                        </a>
-                        <a
-                            href="#"
-                            class="text-[#1E2B4F] relative hover:text-gray-500 inline-flex items-center px-1 pt-1 text-lg font-medium"
-                        >
-                            Pricing
+                            Appointment
+                            
                         </a>
                     </div>
 
@@ -264,24 +254,14 @@
                             hover:border-gray-300 hover:text-gray-700" 
                 -->
                 <a
-                    href="#"
-                    class="bg-indigo-50 border-[#0D63F5] text-[#1E2B4F] block pl-3 pr-4 py-2 border-l-4 text-base font-semibold"
+                    href="{{ route('index') }}"
+                    class="{{ request()->is('/') ?   "bg-indigo-50 border-[#0D63F5] text-[#1E2B4F] block pl-3 pr-4 py-2 border-l-4 text-base font-semibold " : "border-transparent text-[#1E2B4F] hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"}}"
                     >Home</a
                 >
                 <a
-                    href="#"
-                    class="border-transparent text-[#1E2B4F] hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-                    >Featured</a
-                >
-                <a
-                    href="#"
-                    class="border-transparent text-[#1E2B4F] hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-                    >Category</a
-                >
-                <a
-                    href="#"
-                    class="border-transparent text-[#1E2B4F] hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-                    >Pricing</a
+                    href="{{ route('appointment.all.doctor') }}"
+                    class="{{ request()->is('appointment/doctor') ?   "bg-indigo-50 border-[#0D63F5] text-[#1E2B4F] block pl-3 pr-4 py-2 border-l-4 text-base font-semibold " : "border-transparent text-[#1E2B4F] hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"}}"
+                    >Appointment</a
                 >
             </div>
 
