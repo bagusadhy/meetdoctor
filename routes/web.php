@@ -41,6 +41,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('/', LandingController::class);
+Route::get('appointment/doctor', [LandingController::class, 'listDoctor'])->name('appointment.all.doctor');
+Route::get('appointment/doctor/search', [LandingController::class, 'getDoctor'])->name('appointment.search.doctor');
 
 // socialite routes
 Route::get('sign-in-google', [SocialAuthController::class, 'google'])->name('user.login.google');
