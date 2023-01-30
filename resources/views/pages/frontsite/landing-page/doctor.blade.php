@@ -83,6 +83,7 @@
                     success : function(data){
 
                         if(data.total_row > 0){
+                            $('.not-found').html("")
                             $('.doctor').html(data.doctor)
                         }else{
                             $('.doctor').html("")
