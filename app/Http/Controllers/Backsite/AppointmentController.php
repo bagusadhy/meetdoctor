@@ -43,8 +43,7 @@ class AppointmentController extends Controller
             $user_id = Auth::user()->id;
 
             $doctor_id = Doctor::where('user_id', $user_id)->pluck('id');
-
-            $appointment = Appointment::where('doctor_id', $doctor_id)->get();
+            $appointment = Appointment::where(['doctor_id' => $doctor_id, 'payment_status' => 'paid'])->get();
         } else {
 
             $user_id = Auth::user()->id;
