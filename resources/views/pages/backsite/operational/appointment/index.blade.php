@@ -24,7 +24,9 @@
                             <th>Level</th>
                             <th>Date</th>
                             <th>Time</th>
-                            <th>Status</th>
+                            @if (Auth::user()->detail_user->type_user_id == 3 || Auth::user()->detail_user->type_user_id == 1)
+                                <th>Status</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -35,24 +37,32 @@
                                 <td>{{ $appointment_item->consultation->name }}</td>
                                 <td>
                                     @if($appointment_item->level == "1")
-                                        <span class="badge rounded-pill text-bg-info">Low</span>
+                                        <span class="badge rounded-pill text-bg-info" style="width: 80px">Low</span>
                                     @elseif($appointment_item->level == "2")
-                                        <span class="badge rounded-pill text-bg-warning">Medium</span>
+                                        <span class="badge rounded-pill text-bg-warning" style="width: 80px">Medium</span>
                                     @elseif($appointment_item->level == "3")
-                                        <span class="badge rounded-pill text-bg-danger">High</span>
+                                        <span class="badge rounded-pill text-bg-danger" style="width: 80px">High</span>
                                     @endif
                                 </td>
                                 <td>{{ $appointment_item->date ?? date('d-m-Y') }}</td>
                                 <td>{{ $appointment_item->time ?? date('H:i:s') }}</td>
-                                <td>
-                                    @if($appointment_item->status == "1")
-                                        <span class="badge rounded-pill text-bg-success">Payment Completed</span>
-                                    @elseif($appointment_item->status == "2")
-                                        <span class="badge rounded-pill text-bg-warning">Waiting Payment</span>
-                                    @else
-                                        <span>{{ 'N/A' }}</span>
-                                        @endif
-                                </td>
+
+
+                                @if (Auth::user()->detail_user->type_user_id == 3 || Auth::user()->detail_user->type_user_id == 1)
+                                    <td>
+                                        @if($appointment_item->payment_status === "paid")
+                                            <span class="badge rounded-pill text-bg-success" style="width: 150px">Pembayaran Berhasil</span>
+                                        @elseif($appointment_item->payment_status === "waiting")
+                                            <a href="{{ url($appointment_item->midtrans_url) }}" class="btn btn-outline-primary btn-sm rounded-pill" style="width: 150px">Bayar</a>
+                                        @elseif($appointment_item->payment_status === "pending")
+                                            <span class="badge rounded-pill text-bg-warning" style="width: 150px">Pembayaran Tertunda</span>
+                                        @elseif($appointment_item->payment_status === "failed")
+                                            <span class="badge rounded-pill text-bg-danger" style="width: 150px">Pembayaran Gagal</span>
+                                        @else
+                                            <span>{{ 'N/A' }}</span>
+                                            @endif
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             {{--  --}}
@@ -66,7 +76,9 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th></th>
+                            @if (Auth::user()->detail_user->type_user_id == 3 || Auth::user()->detail_user->type_user_id == 1)
+                                <th></th>
+                            @endif
                         </tr>
                     </tfoot>
                 </table>
