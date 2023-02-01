@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontsite;
 use App\Http\Controllers\Controller;
 
 // use library
+use App\Mail\appointment as afterPayment;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -155,6 +157,31 @@ class PaymentController extends Controller
         $transaction->total = $grand_total;
         $transaction->save();
 
+        $this->email($appointment_id);
         return view('pages.frontsite.success.payment-success');
+    }
+
+    public function email($appointment_id)
+    {
+        $appointment = Appointment::find($appointment_id)->with('doctor')->with('consultation')->get();
+
+        $transaction = Transaction::where('appointment_id', $appointment_id)->pluck('total');
+
+        $data = [];
+        foreach ($appointment as $key => $value) {
+            # code...
+
+            $data = [
+                'user' => Auth::user()->name,
+                'doctor' => $value->doctor->name,
+                'consultation' => $value->consultation->name,
+                'date' => date('d M Y', strtotime($value->date)),
+                'time' => date('H:i', strtotime($value->time)),
+                'status' => $value->payment_status,
+                'total' => 'Rp' . number_format($transaction[0])
+            ];
+        }
+
+        Mail::to(Auth::user()->email)->send(new afterPayment($data));
     }
 }
