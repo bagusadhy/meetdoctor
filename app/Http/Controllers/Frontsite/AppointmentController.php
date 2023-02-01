@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Frontsite;
 
 use App\Http\Controllers\Controller;
-
 // use library
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 use Midtrans;
 
@@ -68,6 +68,7 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->all();
 
         $appointment = new Appointment;
@@ -236,6 +237,10 @@ class AppointmentController extends Controller
 
         $appointment->save();
 
-        return redirect(route('payment.transaction', $appointment->id));
+        if ($appointment->payment_status === 'paid') {
+            return redirect(route('payment.transaction', $appointment->id));
+        } else {
+            return view('pages.frontsite.error.payment-error');
+        }
     }
 }
