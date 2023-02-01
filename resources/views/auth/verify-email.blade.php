@@ -1,45 +1,73 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+@extends('layouts.default')
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+@section('title', 'Sign-Up Successful')
 
-        @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided in your profile settings.') }}
-            </div>
-        @endif
+@section('content')
+  
+@endsection
 
-        <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @include('includes.frontsite.meta')
+
+        <title>Verifikasi Email | MeetDoctor</title>
+
+        @stack('before-style')
+            @include('includes.frontsite.style')
+        @stack('after-style')
+
+    </head>
+    <body>
+        
+        @include('sweetalert::alert')
+
+        <!-- Content -->
+        <div class="min-h-screen flex justify-center items-center pt-20 py-28">
+            <div class="mx-auto text-center">
+                <img
+                    src="{{ asset('assets/frontsite/images/sign-up-success-ilustration.svg') }}"
+                    class="inline-block"
+                    alt="Sign up success ilustration"
+                />
+                <div class="mt-12">
+                    <h2 class="text-[#1E2B4F] text-2xl font-semibold">
+                        Registrasi Berhasil
+                    </h2>
+                    <p class="text-[#AFAEC3] mt-4">
+                        Untuk menikmati kemudahan
+                        dalam berkonsultasi
+                        <br />
+                        Silahkan verifikasi email anda terlebih dahulu
+                    </p>
+
+                    @if (session('status') == 'verification-link-sent')
+                        <div class="mb-4 font-medium text-sm text-green-600">
+                            {{ __('Link verifikasi telah dikirim ke email anda.') }}
+                        </div>
+                    @endif
 
                 <div>
-                    <x-jet-button type="submit">
-                        {{ __('Resend Verification Email') }}
-                    </x-jet-button>
+                        <form method="POST" action="{{ route('verification.send') }}">
+                            @csrf
+
+                            <button type="submit" class="inline-block mt-10 bg-[#0D63F3] text-white rounded-full px-14 py-3">
+                                Kirim Verifikasi Email Baru
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
-            </form>
-
-            <div>
-                <a
-                    href="{{ route('profile.show') }}"
-                    class="underline text-sm text-gray-600 hover:text-gray-900"
-                >
-                    {{ __('Edit Profile') }}</a>
-
-                <form method="POST" action="{{ route('logout') }}" class="inline">
-                    @csrf
-
-                    <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 ml-2">
-                        {{ __('Log Out') }}
-                    </button>
-                </form>
             </div>
         </div>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        <!-- End Content -->
+
+        @include('components.frontsite.footer')
+
+        
+        @include('includes.frontsite.script')
+
+
+        {{-- modals --}}
+    </body>
+</html>
