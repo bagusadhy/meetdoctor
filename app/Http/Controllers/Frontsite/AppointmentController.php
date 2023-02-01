@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Frontsite;
 
-use App\Http\Controllers\Controller;
 // use library
-use Symfony\Component\HttpFoundation\Request;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\MasterData\ConfigPayment;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
 
 use Midtrans;
 
+
 // model
 use App\Models\User;
-use App\Models\Operational\Doctor;
 use App\Models\MasterData\Consultation;
 use App\Models\Operational\Appointment;
-use App\Models\MasterData\ConfigPayment;
 use App\Models\Operational\Transaction;
+use App\Models\Operational\Doctor;
 
 class AppointmentController extends Controller
 {
@@ -226,7 +227,7 @@ class AppointmentController extends Controller
             $appointment->payment_status = 'failed';
         } else if ($transaction_status == 'settlement') {
             // TODO set payment status in merchant's database to 'Settlement'
-            $appointment->payment_status = 'success';
+            $appointment->payment_status = 'paid';
         } else if ($transaction_status == 'pending') {
             // TODO set payment status in merchant's database to 'Pending'
             $appointment->payment_status = 'pending';
@@ -239,8 +240,10 @@ class AppointmentController extends Controller
 
         if ($appointment->payment_status === 'paid') {
             return redirect(route('payment.transaction', $appointment->id));
-        } else {
+        } else if ($appointment->payment_status === 'failed') {
             return view('pages.frontsite.error.payment-error');
+        } else {
+            return redirect(route('index'));
         }
     }
 }
