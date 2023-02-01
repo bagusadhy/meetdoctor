@@ -63,6 +63,9 @@ class SocialAuthController extends Controller
 
                 $user = User::create($data);
 
+                // add email verified at
+                $user->email_verified_at = date('Y-m-d H:i:s');
+                
                 // synchronized to role 
                 $user->role()->sync(5);
 
