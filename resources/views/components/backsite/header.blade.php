@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="d-flex align-items-center justify-content-end gap-4 position-relative">
-                <img src="{{ asset('assets/backsite/app-assets/images/avatar.jpg') }}" class="avatar"/>
+                <img src="{{ (isset(Auth::user()->detail_user->photo))  ? asset(Auth::user()->detail_user->photo) : asset('assets/frontsite/images/authenticated-user.svg') }}" class="avatar"/>
             </div>
         </div>
     </nav>
