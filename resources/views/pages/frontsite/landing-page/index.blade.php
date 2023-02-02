@@ -108,7 +108,7 @@
                 <h3 class="text-[#1E2B4F] text-2xl font-semibold">Best Doctors</h3>
                 <div class="flex justify-between">
                     <p class="text-[#A7B0B5] mt-2">Help your life much better</p>
-                    <a href="{{ route('appointment.all.doctor') }}" class="mt-2 text-[#1E2B4F] font-semibold" style="text-decoration: underline rgb(30 43 79) 2px">All doctors</a>
+                    <a href="{{ route('appointment.all.doctor') }}" class="mt-2 text-[#1E2B4F] " style="text-decoration: underline rgb(30 43 79) 1px">See more...</a>
                 </div>
 
                 <!-- Card -->
