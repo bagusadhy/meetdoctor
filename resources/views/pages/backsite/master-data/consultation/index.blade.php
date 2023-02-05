@@ -28,11 +28,32 @@
                 </div>
             @endif
 
-
             @can('consultation_create')
-                <div class="">
-                    <button onclick="event.preventDefault(); $('#form-consultation').attr('action', '{{ route('consultation.store') }}');
-                    $('#modal-consultation').modal('show');" class="btn btn-primary mb-4">Add New Consultation</button>
+                <div class="accordion mb-3" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Add Consultation
+                        </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body col-8 mx-auto">
+                                <form action="{{ route('consultation.store') }}" id="form-consultation" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Consultation Name</label>
+                                        <input type="text" class="form-control" id="name" name="name">
+                                        @if($errors->has('name'))
+                                            <p style="font-style: bold; color: red;">{{ $errors->first('name') }}</p>
+                                        @endif
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <input type="submit" class="btn btn-primary" style="width: 100px" value="add"></input>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endcan
 
@@ -51,23 +72,41 @@
                                     <td>{{ $c->name }}</td>
                                     <td>
                                         <div class="text-center">
-
-                                            @can('consultation_show')
-                                                <a href="{{ route('consultation.show', $c->id) }}" class="btn btn-sm btn-success">Detail</a>
-                                            @endcan
-
-                                            @can('consultation_edit')
-                                                <a href="{{ route('consultation.edit', $c->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            @endcan
-
-                                            @can('consultation_delete')
-                                                <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('consultation.destroy', $c->id) }}'); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
-                                                    <form action="" id="form-delete" method="POST" style="display: none">
-                                                        @csrf
-                                                        @method('delete')
-                                                    </form>
+                                            <div class="btn-group">
+                                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Action
                                                 </button>
-                                            @endcan
+                                                <ul class="dropdown-menu">
+                                                  
+                                                    {{-- show --}}
+                                                    <li>
+                                                        @can('consultation_show')
+                                                        <a href="{{ route('consultation.show', $c->id) }}" class="dropdown-item">Detail</a>
+                                                        @endcan
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+
+                                                    {{-- edit --}}
+                                                    <li>
+                                                        @can('consultation_edit')
+                                                        <a href="{{ route('consultation.edit', $c->id) }}" class="dropdown-item">Edit</a>
+                                                        @endcan
+                                                    </li>
+
+                                                    {{-- delete --}}
+                                                    <li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        @can('role_delete')
+                                                            <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('consultation.destroy', $c->id) }}'); document.getElementById('form-delete').submit()" class="dropdown-item">Delete
+                                                                <form action="" id="form-delete" method="post" style="display: none">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                </form>
+                                                            </button>
+                                                        @endcan
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -95,20 +134,7 @@
                 <h5 class="modal-title">Add Consultation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="" id="form-consultation" method="POST">
-                @csrf
-                <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Consultation Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
-                        <input type="submit" class="btn btn-primary" value="add"></input>
-                    </div>
-                </div>
-            </form>
+            
         </div>
     </div>
 @endsection
