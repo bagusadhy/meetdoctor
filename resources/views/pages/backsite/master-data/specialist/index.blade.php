@@ -13,11 +13,9 @@
                 <p>Manage data for specialist</p>
             </header>
 
-              @if ($errors->any())
-                <div class="alert bg-danger alert-dismissible mb-2" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -28,9 +26,40 @@
             @endif
 
             @can('specialist_create')
-                <div class="">
-                    <button onclick="event.preventDefault(); $('#form-specialist').attr('action', '{{ route('specialist.store') }}');
-                    $('#modal-specialist').modal('show');" class="btn btn-primary mb-4">Add New Specialist</button>
+                <div class="accordion mb-3" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Add Specialist
+                        </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body col-8 mx-auto">
+                                <form action="{{ route('specialist.store') }}" id="form-specialist" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Specialist Name<code style="color: red">*</code></label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                        @if($errors->has('name'))
+                                            <p style="font-style: bold; color: red;">{{ $errors->first('name') }}</p>
+                                        @endif
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Specialist Price<code style="color: red">*</code></label>
+                                        <input type="text" class="form-control" id="price" name="price" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': 0, 'prefix': 'Rp.   ', 'placeholder': '0'" required>
+                                        @if($errors->has('price'))
+                                            <p style="font-style: bold; color: red;">{{ $errors->first('price') }}</p>
+                                        @endif
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <input type="submit" class="btn btn-primary" value="add" style="width: 100px"></input>
+                                    </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endcan
 
@@ -50,24 +79,42 @@
                                     <td>{{ $s->name }}</td>
                                     <td>Rp.{{ number_format($s['price']) }}</td>
                                     <td>
-                                        <div class="text-center">
-
-                                            @can('specialist_show')
-                                                <a href="{{ route('specialist.show', $s->id) }}" class="btn btn-sm btn-success">Detail</a>
-                                            @endcan
-
-                                            @can('specialist_edit')
-                                                <a href="{{ route('specialist.edit', $s->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            @endcan
-
-                                            @can('specialist_delete')
-                                                <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('specialist.destroy', $s->id) }}'); document.getElementById('form-delete').submit()" class="btn btn-sm btn-danger">Delete
-                                                    <form action="" id="form-delete" method="post" style="display: none">
-                                                        @csrf
-                                                        @method('delete')
-                                                    </form>
+                                         <div class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Action
                                                 </button>
-                                            @endcan
+                                                <ul class="dropdown-menu">
+                                                  
+                                                    {{-- show --}}
+                                                    <li>
+                                                        @can('specialist_show')
+                                                        <a href="{{ route('specialist.show', $s->id) }}" class="dropdown-item">Detail</a>
+                                                        @endcan
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+
+                                                    {{-- edit --}}
+                                                    <li>
+                                                        @can('specialist_edit')
+                                                        <a href="{{ route('specialist.edit', $s->id) }}" class="dropdown-item">Edit</a>
+                                                        @endcan
+                                                    </li>
+
+                                                    {{-- delete --}}
+                                                    <li>
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        @can('specialist_delete')
+                                                            <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('specialist.destroy', $s->id) }}'); document.getElementById('form-delete').submit()" class="dropdown-item">Delete
+                                                                <form action="" id="form-delete" method="post" style="display: none">
+                                                                    @csrf
+                                                                    @method('delete')
+                                                                </form>
+                                                            </button>
+                                                        @endcan
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -90,41 +137,6 @@
            
         </section>
     </main>
-
-    <div class="modal" tabindex="-1" id="modal-specialist">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Specialist</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="" id="form-specialist" method="POST">
-                @csrf
-                <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Specialist Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
-                            @if($errors->has('name'))
-                                <p style="font-style: bold; color: red;">{{ $errors->first('name') }}</p>
-                            @endif
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="price" class="form-label">Specialist Price</label>
-                            <input type="text" class="form-control" id="price" name="price" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': 0, 'prefix': 'Rp.   ', 'placeholder': '0'">
-                             @if($errors->has('price'))
-                                <p style="font-style: bold; color: red;">{{ $errors->first('price') }}</p>
-                             @endif
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
-                        <input type="submit" class="btn btn-primary" value="add"></input>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 @endsection
 
 @push('after-script')

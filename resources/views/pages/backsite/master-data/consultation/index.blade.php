@@ -15,10 +15,8 @@
 
             {{-- error --}}
             @if ($errors->any())
-                <div class="alert bg-danger alert-dismissible mb-2" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -41,8 +39,8 @@
                                 <form action="{{ route('consultation.store') }}" id="form-consultation" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Consultation Name</label>
-                                        <input type="text" class="form-control" id="name" name="name">
+                                        <label for="name" class="form-label">Consultation Name<code style="color: red">*</code></label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
                                         @if($errors->has('name'))
                                             <p style="font-style: bold; color: red;">{{ $errors->first('name') }}</p>
                                         @endif
@@ -96,7 +94,7 @@
                                                     {{-- delete --}}
                                                     <li>
                                                         <li><hr class="dropdown-divider"></li>
-                                                        @can('role_delete')
+                                                        @can('consultation_delete')
                                                             <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('consultation.destroy', $c->id) }}'); document.getElementById('form-delete').submit()" class="dropdown-item">Delete
                                                                 <form action="" id="form-delete" method="post" style="display: none">
                                                                     @csrf
@@ -125,18 +123,6 @@
             @endcan
         </section>
     </main>
-
-
-     <div class="modal" tabindex="-1" id="modal-consultation">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Consultation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-        </div>
-    </div>
 @endsection
 
 @push('after-script')

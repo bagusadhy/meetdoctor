@@ -126,7 +126,7 @@ class SpecialistController extends Controller
     public function destroy(Specialist $specialist)
     {
         abort_if(Gate::denies('specialist_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $specialist->delete();
+        $specialist->forceDelete();
 
         alert()->success('Success Message', 'Successfully delete specialist');
         return back();

@@ -10,12 +10,12 @@
         <section class="p-3">
 
             {{-- errors --}}
-            @if($errors->any())
+            @if ($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
                     <ul>
-                        @foreach ($errors->all() as $error )
+                        @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
@@ -163,7 +163,7 @@
 
                                                     {{-- edit --}}
                                                     <li>
-                                                        @can('role_edit')
+                                                        @can('user_edit')
                                                         <a href="{{ route('user.edit', $user_item->id) }}" class="dropdown-item">Edit</a>
                                                         @endcan
                                                     </li>
@@ -172,7 +172,7 @@
                                                     <li>
                                                         @if ($user_item->id != 1)
                                                             <li><hr class="dropdown-divider"></li>
-                                                            @can('role_delete')
+                                                            @can('user_delete')
                                                                 <button onclick="event.preventDefault(); $('#form-delete').attr('action', '{{ route('user.destroy', $user_item->id) }}'); document.getElementById('form-delete').submit()" class="dropdown-item">Delete
                                                                     <form action="" id="form-delete" method="post" style="display: none">
                                                                         @csrf
