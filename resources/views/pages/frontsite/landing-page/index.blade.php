@@ -94,7 +94,6 @@
                             <p class="text-[#AFAEC3] mt-1">{{ count($specialist_item->doctor) }} doctors</p>
                         </a>
                     @empty
-                        {{--  --}}
                     @endforelse            
                     <!-- End Card -->
                 </div>

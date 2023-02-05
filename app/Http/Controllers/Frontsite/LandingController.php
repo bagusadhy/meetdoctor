@@ -26,8 +26,8 @@ class LandingController extends Controller
      */
     public function index()
     {
-        $specialist = Specialist::limit(5)->get();
-        $doctor = Doctor::limit(4)->get();
+        $specialist = Specialist::with('doctor')->limit(5)->get();
+        $doctor = Doctor::with('specialist')->limit(4)->get();
 
         return view('pages.frontsite.landing-page.index', compact('doctor', 'specialist'));
     }
@@ -100,7 +100,7 @@ class LandingController extends Controller
 
     public function listDoctor(Doctor $doctor)
     {
-        $list = Doctor::all();
+        $list = Doctor::with('specialist')->get();
 
         return view('pages.frontsite.landing-page.doctor', compact('list'));
     }
