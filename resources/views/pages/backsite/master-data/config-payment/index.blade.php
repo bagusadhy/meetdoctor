@@ -13,12 +13,10 @@
                 <p>Manage data for Config Payment</p>
             </header>
 
-             {{-- error --}}
+            {{-- error --}}
             @if ($errors->any())
-                <div class="alert bg-danger alert-dismissible mb-2" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -45,10 +43,21 @@
                                     <td>{{ number_format($c->vat) }}%</td>
                                     <td>
                                         <div class="text-center">
+                                            <div class="btn-group">
+                                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Action
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                  
+                                                    {{-- edit --}}
+                                                    <li>
+                                                        @can('config_payment_edit')
+                                                        <a href="{{ route('config-payment.edit', $c->id) }}" class="dropdown-item">Edit</a>
+                                                        @endcan
+                                                    </li>
 
-                                            @can('config_payment_edit')
-                                                <a href="{{ route('config-payment.edit', $c->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            @endcan
+                                                </ul>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
