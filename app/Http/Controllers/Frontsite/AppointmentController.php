@@ -133,7 +133,7 @@ class AppointmentController extends Controller
 
     public function appointment($doctor_id)
     {
-        $doctor = Doctor::find($doctor_id);
+        $doctor = Doctor::where('id', $doctor_id)->with('specialist')->first();
 
         $consultation = Consultation::all();
         $appointment = Appointment::where('doctor_id', $doctor_id)->pluck('date')->toArray();

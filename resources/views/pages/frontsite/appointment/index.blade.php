@@ -221,7 +221,7 @@
 
     <script>
 
-    
+        // need optimization
         var date  = @json(json_encode($tanggal));
 
     
@@ -259,9 +259,6 @@
 
 
     
-        // set current time
-        var date = new Date();
-        var currentTime = date.getHours() + ":" + date.getMinutes();
 
         // Time Picker
         const fpTime = flatpickr('#time', {
@@ -270,7 +267,6 @@
             noCalendar: true,
             dateFormat: 'H:i',
             disableMobile: 'true',
-            defaultDate: currentTime,
             minTime: "09.00",
             maxTime: "16:00"
         });
