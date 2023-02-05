@@ -51,7 +51,7 @@ class DoctorController extends Controller
     {
         abort_if(Gate::denies('doctor_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $doctor = Doctor::all();
+        $doctor = Doctor::with('specialist')->get();
         $specialist = Specialist::all();
 
         return view('pages.backsite.operational.doctor.index', compact('doctor', 'specialist'));

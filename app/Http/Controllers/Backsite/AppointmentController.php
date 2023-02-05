@@ -37,17 +37,17 @@ class AppointmentController extends Controller
         $type_user = Auth::user()->detail_user->type_user_id;
 
         if ($type_user == 1) {
-            $appointment = Appointment::all();
+            $appointment = Appointment::with(['doctor', 'user'])->get();
         } elseif ($type_user == 2) {
 
             $user_id = Auth::user()->id;
 
             $doctor_id = Doctor::where('user_id', $user_id)->pluck('id');
-            $appointment = Appointment::where(['doctor_id' => $doctor_id, 'payment_status' => 'paid'])->get();
+            $appointment = Appointment::where(['doctor_id' => $doctor_id, 'payment_status' => 'paid'])->with(['doctor', 'user'])->get();
         } else {
 
             $user_id = Auth::user()->id;
-            $appointment = Appointment::where('user_id', $user_id)->get();
+            $appointment = Appointment::where('user_id', $user_id)->with(['doctor', 'user'])->get();
         }
         return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }

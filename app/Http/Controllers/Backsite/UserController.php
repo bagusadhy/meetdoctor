@@ -39,7 +39,7 @@ class UserController extends Controller
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $user = User::orderBy('name', 'ASC')->get();
+        $user = User::with(['role', 'detail_user', 'detail_user.type_user'])->orderBy('name', 'ASC')->get();
         $type_user = TypeUser::all();
         $roles = Role::pluck('title', 'id');
 

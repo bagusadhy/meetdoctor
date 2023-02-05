@@ -31,7 +31,7 @@ class TransactionController extends Controller
     {
         abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transaction = Transaction::all();
+        $transaction = Transaction::with(['doctor', 'user'])->get();
         return view('pages.backsite.operational.transaction.index', compact('transaction'));
     }
 
