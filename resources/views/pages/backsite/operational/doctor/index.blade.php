@@ -13,11 +13,10 @@
                 <p>Manage data for Doctor</p>
             </header>
 
+            {{-- error --}}
             @if ($errors->any())
-                <div class="alert bg-danger alert-dismissible mb-2" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -98,7 +97,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-end">
-                                        <input type="submit" class="btn btn-sm btn-primary" value="submit">
+                                        <input type="submit" class="btn btn-sm btn-primary" value="add" style="width: 100px">
                                     </div>
                                 </form>
                             </div>

@@ -53,7 +53,7 @@
                                         @endif
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <input type="submit" class="btn btn-primary" value="add" style="width: 100px"></input>
+                                        <input type="submit" class="btn btn-primary btn-sm" value="add" style="width: 100px"></input>
                                     </div>
                                     </div>
                                 </form>
