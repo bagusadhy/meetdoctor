@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 // request
 use App\Http\Requests\Doctor\StoreDoctorRequest;
 use App\Http\Requests\Doctor\UpdateDoctorRequest;
-
+use App\Mail\doctor as MailDoctor;
 // use Gate;
 // use Auth;
 use Illuminate\Support\Facades\Gate;
@@ -122,6 +123,13 @@ class DoctorController extends Controller
             $detail_user->type_user_id = 2;
             $detail_user->save();
         });
+
+        $maildata = [
+            'email' => $request->email,
+            'password' => $request->email
+        ];
+
+        Mail::to($request->email)->send(new MailDoctor($maildata));
 
         alert()->success('Success Message', 'Successfully added new doctor');
         return redirect(route('doctor.index'));

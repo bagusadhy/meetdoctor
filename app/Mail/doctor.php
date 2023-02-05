@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class appointment extends Mailable
+class doctor extends Mailable
 {
     use Queueable, SerializesModels;
     private $maildata;
@@ -32,7 +32,7 @@ class appointment extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Appointment Details',
+            subject: 'Become A Doctor',
         );
     }
 
@@ -44,7 +44,7 @@ class appointment extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.appointment',
+            markdown: 'emails.doctor',
             with: $this->maildata
         );
     }

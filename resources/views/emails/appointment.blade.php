@@ -1,7 +1,8 @@
 <x-mail::message>
-# Introduction
+# New Appointment Created
 
-The body of your message.
+<h2>Congratulations!</h2> <br>
+Your appointment has been created, dont forget to attend on time <br>
 
 <x-mail::table>
 | Name             | Doctor         | Consultation            | Date           | Time           | Status           | Total           |
