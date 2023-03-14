@@ -133,7 +133,7 @@ class LandingController extends Controller
                     $output .= '
                         <a href=' . route('appointment.doctor', $doctor->id) . ' class="group">
                             <div class="relative z-10 w-full h-[350px] rounded-2xl overflow-hidden">
-                                <img src=' . asset($doctor->photo) . ' class="w-full h-full bg-center bg-no-repeat object-cover object-center" alt="Doctor 1">
+                                <img src=' . url('storage/'.$doctor->photo) . ' class="w-full h-full bg-center bg-no-repeat object-cover object-center" alt="Doctor 1">
                                 <div class="opacity-0 group-hover:opacity-100 transition-all ease-in absolute inset-0 bg-[#0D63F3] bg-opacity-70 flex justify-center items-center">
                                     <span class="text-[#0D63F3] font-medium bg-white rounded-full px-8 py-3">Book Now</span>
                                 </div>
