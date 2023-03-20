@@ -226,7 +226,7 @@
                     Payment Method
                 </h3>
                 <div class="mt-8">
-                <a href="{{ $appointment->midtrans_url }}" class="bg-[#0D63F3] text-white px-10 py-3 rounded-full text-center mt-8">Pay With MidTrans</a> 
+                <a href="{{ url($appointment->midtrans_url) }}" class="bg-[#0D63F3] text-white px-10 py-3 rounded-full text-center mt-8">Pay With MidTrans</a> 
                 </div>
             </div>
         </div>

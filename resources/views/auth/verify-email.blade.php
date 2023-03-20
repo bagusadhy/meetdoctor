@@ -1,11 +1,3 @@
-@extends('layouts.default')
-
-@section('title', 'Sign-Up Successful')
-
-@section('content')
-  
-@endsection
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
